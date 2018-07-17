@@ -26,5 +26,13 @@ public class Module implements Serializable {
     private static final long serialVersionUID = 3698217265888327346L;
     @Id
     private String id;
+    private String name;
+    private Date createAt;
+    private Date updateAt;
+    private User createBy;
+    private User updateBy;
+    private bool active;
+    private String note;
+    
 
 }
