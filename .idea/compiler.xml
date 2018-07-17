@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="emp-common" />
+        <module name="emp-ui-core-app" />
+        <module name="emp-ui-core-conf" />
+        <module name="emp-ui-core-model" />
+        <module name="emp-ui-core-repository" />
+        <module name="emp-ui-core-rest" />
+        <module name="emp-ui-core-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
+  </component>
+</project>

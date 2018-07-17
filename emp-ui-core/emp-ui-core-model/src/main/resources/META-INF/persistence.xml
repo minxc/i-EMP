@@ -1,0 +1,42 @@
+<!--
+  ~ Hibernate, Relational Persistence for Idiomatic Java
+  ~
+  ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.
+  ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+  -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="corePersistenceUnit">
+
+        <description>
+            Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
+        </description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>com.minxc.core.entity.User</class>
+        <class>com.minxc.core.entity.Action</class>
+        <class>com.minxc.core.entity.Group</class>
+        <class>com.minxc.core.entity.Rule</class>
+        <class>com.minxc.core.entity.Role</class>
+        <class>com.minxc.core.entity.Organization</class>
+        <class>com.minxc.core.entity.Employee</class>
+        <class>com.minxc.core.entity.UserOrganizationLink</class>
+        <class>com.minxc.core.entity.UserRoleLink</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;" />
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="Mym7Root!" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
