@@ -2,6 +2,7 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -27,9 +28,14 @@ public class SystemParameter implements Serializable {
     private static final long serialVersionUID = 6530416528271673220L;
     @Id
     private String  id;
+    @Column(name="NAME")
     private String name;
+    @Column(name="CODE")
     private String code;
+    @Column(name="VALUE")
     private String value;
+    @Column(name="NOTE")
     private String note;
+    @Column(name="ACTIVE")
     private boolean active;
 }

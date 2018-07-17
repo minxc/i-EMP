@@ -2,10 +2,9 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**********************************************************
  * 系统模块
@@ -25,14 +24,25 @@ import java.io.Serializable;
 public class Module implements Serializable {
     private static final long serialVersionUID = 3698217265888327346L;
     @Id
+    @Column(name = "MODULE_ID")
     private String id;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "CREATE_AT")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+    @Column(name = "UPDATE_AT")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updateAt;
+    @OneToOne
+    @JoinColumn(name = "CREATE_BY")
     private User createBy;
+    @OneToOne
+    @JoinColumn(name = "UPDATE_BY")
     private User updateBy;
-    private bool active;
+    @Column(name = "ACTIVE")
+    private boolean active;
+    @Column(name = "NOTE", length = 255)
     private String note;
-    
 
 }

@@ -42,9 +42,6 @@ public class Model implements Serializable {
     private String createDate;
     @Column(name="UPDATE_DATE")
     private String updateDate;
-    @OneToOne
-    private Module module;
 
-    @OneToMany( mappedBy = "MODEL_ID")
-    private Set<ModelField> fields;
+
 }

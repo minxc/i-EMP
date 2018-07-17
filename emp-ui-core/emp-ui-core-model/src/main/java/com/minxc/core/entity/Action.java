@@ -31,8 +31,12 @@ public class Action implements Serializable {
     private String id;
     @Column(name="TYPE")
     private String type; //计划提供使用类型区分前台操作、后台请求、或者页面请求信息
+
+    @Column(name="CODE")
+    private String code;
+
     @Column(name="NAME")
     private String name;
-    @Column(name="NOTES")
+    @Column(name="NOTE")
     private String notes;
 }

@@ -2,9 +2,7 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**********************************************************
@@ -15,7 +13,7 @@ import java.io.Serializable;
  *********************************************************/
 
 @Entity
-@Table(name="MR_MODEL_FIELDS")
+@Table(name = "MR_MODEL_FIELDS")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,38 +27,37 @@ public class ModelField implements Serializable {
 
     @Id
     private String id;
-    private String model;
-    private String model_id;
-    private String name;
-    private String state;
-    private String field_description;
-    private String help;
-    private String ttype;
-    private String relation;
-    private String relation_field;
-    private String index;
-    private String copy;
-    private String related;
-    private String readonly;
-    private String required;
-    private String selectable;
-    private String translate;
-    private String serialization_field_id;
-    private String relation_table;
-    private String column1;
-    private String column2;
-    private String store;
-    private String domain;
-    private String selection;
-    private String create_date;
-    private String on_delete;
-    private String write_uid;
-    private String depends;
-    private String size;
-    private String complete_name;
-    private String create_uid;
-    private String compute;
-    private String write_date;
-    private String website_form_blacklisted;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODEL_ID", nullable = false, unique = false, updatable = true)
+    private Model model;
+    @Column(name = "NAME", length = 64)
+    private String name; //字段名称，为显示使用
+    @Column(name = "CODE", length = 64)
+    private String code;  //数据库字段
+    @Column(name = "TYPE", length = 32)
+    private String  type; //字段类型
+    @Column(name = "LENGTH")
+    private int length; //字段长度
+    @Column(name = "NULLABLE")
+    private boolean nullable;  //是否为空的
+    @Column(name = "ISKEY")
+    private boolean isKey;   //是否主键
+    @Column(name = "COMMENT", length = 255)
+    private String comment; //注释
+    @Column(name = "INDEX")
+    private boolean index;  //是否是索引
+    @Column(name = "INDEX_NAME", length = 64)
+    private String  indexName; //索引名称
+    @Column(name = "UNIQUE")
+    private boolean  uique; // 是否唯一
+    @Column(name = "IS_FOREIGN_KEY")
+    private boolean isForeignKey;   //是否外键
+    @Column(name = "REFERENCE_TABLE", length = 64)
+    private String referenceTable; //外键参照表
+    @Column(name = "REFERENCE_FIELD", length = 64)
+    private String referenceField;  //外键参照列
+    @Column(name = "DEFAULT_VALUE", length = 64)
+    private String defaultValue; //字段默认值
+    @Column(name = "SELECTABLE")
+    private boolean selectable;  //是否可检索， 限制字段在页面是否可以展示----目前先放在这里，表示该字段是否的可以参与数据权限的使用
 }

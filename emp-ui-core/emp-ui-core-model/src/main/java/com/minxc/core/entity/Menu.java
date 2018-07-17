@@ -15,7 +15,7 @@ import java.io.Serializable;
  *
  *********************************************************/
 
-@Entity(name="MR_MENUS")
+@Entity
 @Table(name="MR_MENUS")
 @Getter
 @Setter
