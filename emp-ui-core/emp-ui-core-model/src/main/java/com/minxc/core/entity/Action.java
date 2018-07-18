@@ -2,10 +2,7 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**********************************************************
@@ -15,7 +12,7 @@ import java.io.Serializable;
  *
  *********************************************************/
 @Entity
-@Table(name="MR_ACTION")
+@Table(name = "MR_ACTION", indexes = {@Index(name="IDX_MR_ACTION_VIEWID", columnList = "ACTION_VIEW_ID")})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,14 +26,35 @@ public class Action implements Serializable {
 
     @Id
     private String id;
-    @Column(name="TYPE")
-    private String type; //计划提供使用类型区分前台操作、后台请求、或者页面请求信息
+    @Column(name = "ACTION_TYPE")
+    private String type; //GET POST
 
-    @Column(name="CODE")
+    @Column(name = "ACTION_CODE")
     private String code;
 
-    @Column(name="NAME")
+    @Column(name = "ACTION_NAME")
     private String name;
-    @Column(name="NOTE")
-    private String notes;
+
+    @Column(name = "ACTION_NOTES")
+    private String notes;   //备注
+
+    @Column(name = "ACTION_URL")
+    private String url; //请求的URL
+
+    @Column(name = "ACTION_ACTIVE")
+    private boolean active;   //是否启用
+
+    @Column(name = "ACTION_CREATE_UID")
+    private String createUid;
+    @Column(name = "ACTION_WRITE_UID")
+    private String writeUid;
+    @Column(name = "ACTION_CREATE_DATE")
+    private String createDate;
+    @Column(name = "ACTION_WRITE_DATE")
+    private String writeDate;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ACTION_VIEW_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_MR_ACTION_VIEWID") )
+    private View view;
+
 }

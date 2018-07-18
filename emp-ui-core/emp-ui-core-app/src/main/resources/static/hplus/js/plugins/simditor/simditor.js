@@ -668,7 +668,7 @@ InputManager = (function(_super) {
     })(this));
     this.editor.on('selectionchanged', (function(_this) {
       return function(e) {
-        return _this.editor.undoManager.update();
+        return _this.editor.undoManager.write();
       };
     })(this));
     this.editor.body.on('keydown', $.proxy(this._onKeyDown, this)).on('keypress', $.proxy(this._onKeyPress, this)).on('keyup', $.proxy(this._onKeyUp, this)).on('mouseup', $.proxy(this._onMouseUp, this)).on('focus', $.proxy(this._onFocus, this)).on('blur', $.proxy(this._onBlur, this)).on('paste', $.proxy(this._onPaste, this)).on('drop', $.proxy(this._onDrop, this));
@@ -1411,7 +1411,7 @@ UndoManager = (function(_super) {
     return this.editor.trigger('valuechanged', ['undo']);
   };
 
-  UndoManager.prototype.update = function() {
+  UndoManager.prototype.write = function() {
     var currentState, html;
     if (this._timer) {
       return;

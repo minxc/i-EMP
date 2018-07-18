@@ -38,4 +38,13 @@ public class SystemParameter implements Serializable {
     private String note;
     @Column(name="ACTIVE")
     private boolean active;
+
+    @Column(name="CREATE_UID")
+    private String createUid;
+    @Column(name="WRITE_UID")
+    private String writeUid;
+    @Column(name="CREATE_DATE")
+    private String createDate;
+    @Column(name="WRITE_DATE")
+    private String writeDate;
 }

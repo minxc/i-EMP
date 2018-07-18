@@ -412,7 +412,7 @@
     };
 
 	// Prevent against multiple instantiations,
-	// handle updates and method calls
+	// handle writes and method calls
 	$.fn[pluginName] = function(options, args) {
 		return this.each(function() {
 			var self = $.data(this, 'plugin_' + pluginName);

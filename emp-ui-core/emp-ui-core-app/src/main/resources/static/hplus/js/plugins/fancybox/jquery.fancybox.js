@@ -545,7 +545,7 @@
 			}
 		},
 
-		update: function (e) {
+		write: function (e) {
 			var type = (e && e.type),
 				anyway = !type || type === 'orientationchange';
 
@@ -595,7 +595,7 @@
 					F.trigger('onUpdate');
 				}
 
-				F.update();
+				F.write();
 			}
 		},
 
@@ -672,7 +672,7 @@
 
 			// Changing document height on iOS devices triggers a 'resize' event,
 			// that can change document height... repeating infinitely
-			W.bind('orientationchange.fb' + (isTouch ? '' : ' resize.fb') + (current.autoCenter && !current.locked ? ' scroll.fb' : ''), F.update);
+			W.bind('orientationchange.fb' + (isTouch ? '' : ' resize.fb') + (current.autoCenter && !current.locked ? ' scroll.fb' : ''), F.write);
 
 			keys = current.keys;
 
@@ -841,7 +841,7 @@
 			coming.group  = F.group;
 			coming.index  = index;
 
-			// Give a chance for callback or helpers to update coming item (type, title, etc)
+			// Give a chance for callback or helpers to write coming item (type, title, etc)
 			F.coming = coming;
 
 			if (false === F.trigger('beforeLoad')) {
@@ -1007,7 +1007,7 @@
 
 					// iOS will lose scrolling if we resize
 					if (!isTouch) {
-						$(this).bind('load.fb', F.update);
+						$(this).bind('load.fb', F.write);
 					}
 
 					// Without this trick:
@@ -1137,7 +1137,7 @@
 				current.inner.append( content );
 			}
 
-			// Give a chance for helpers or callbacks to update elements
+			// Give a chance for helpers or callbacks to write elements
 			F.trigger('beforeShow');
 
 			// Set scrolling before calculating dimensions
@@ -1428,7 +1428,7 @@
 
 			F.wrap.css('overflow', 'visible').addClass('fancybox-opened');
 
-			F.update();
+			F.write();
 
 			// Assign a click event
 			if ( current.closeClick || (current.nextClick && F.group.length > 1) ) {
@@ -1732,9 +1732,9 @@
 			}
 
 			if (!this.fixed) {
-				W.bind('resize.overlay', $.proxy( this.update, this) );
+				W.bind('resize.overlay', $.proxy( this.write, this) );
 
-				this.update();
+				this.write();
 			}
 
 			if (opts.closeClick) {
@@ -1780,7 +1780,7 @@
 
 		// Private, callbacks
 
-		update : function () {
+		write : function () {
 			var width = '100%', offsetWidth;
 
 			// Reset width/height so it will not mess
@@ -1850,7 +1850,7 @@
 
 		onUpdate : function() {
 			if (!this.fixed) {
-				this.update();
+				this.write();
 			}
 		},
 

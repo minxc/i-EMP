@@ -72,7 +72,7 @@
 
     var display = this.display = new Display(place, doc);
     display.wrapper.CodeMirror = this;
-    updateGutters(this);
+    writeGutters(this);
     themeChanged(this);
     if (options.lineWrapping)
       this.display.wrapper.className += " CodeMirror-wrap";
@@ -197,7 +197,7 @@
     // Empty space (in pixels) above the view
     d.viewOffset = 0;
     d.lastSizeC = 0;
-    d.updateLineNumbers = null;
+    d.writeLineNumbers = null;
 
     // Used to only resize the line number gutter when necessary (when
     // the amount of lines crosses a boundary that makes its width change)
@@ -238,7 +238,7 @@
     d.selForContextMenu = null;
   }
 
-  // STATE UPDATES
+  // STATE WRITES
 
   // Used to get the editor into a consistent state again when options change.
 
@@ -269,7 +269,7 @@
     estimateLineHeights(cm);
     regChange(cm);
     clearCaches(cm);
-    setTimeout(function(){updateScrollbars(cm);}, 100);
+    setTimeout(function(){writeScrollbars(cm);}, 100);
   }
 
   // Returns a function that estimates the height of a line, to use as
@@ -297,7 +297,7 @@
     var doc = cm.doc, est = estimateHeight(cm);
     doc.iter(function(line) {
       var estHeight = est(line);
-      if (estHeight != line.height) updateLineHeight(line, estHeight);
+      if (estHeight != line.height) writeLineHeight(line, estHeight);
     });
   }
 
@@ -314,14 +314,14 @@
   }
 
   function guttersChanged(cm) {
-    updateGutters(cm);
+    writeGutters(cm);
     regChange(cm);
     setTimeout(function(){alignHorizontally(cm);}, 20);
   }
 
   // Rebuild the gutter elements, ensure the margin to the left of the
   // code matches their width.
-  function updateGutters(cm) {
+  function writeGutters(cm) {
     var gutters = cm.display.gutters, specs = cm.options.gutters;
     removeChildren(gutters);
     for (var i = 0; i < specs.length; ++i) {
@@ -333,10 +333,10 @@
       }
     }
     gutters.style.display = i ? "" : "none";
-    updateGutterSpace(cm);
+    writeGutterSpace(cm);
   }
 
-  function updateGutterSpace(cm) {
+  function writeGutterSpace(cm) {
     var width = cm.display.gutters.offsetWidth;
     cm.display.sizer.style.marginLeft = width + "px";
     cm.display.scrollbarH.style.left = cm.options.fixedGutter ? width + "px" : 0;
@@ -396,8 +396,8 @@
     return cm.display.scroller.clientHeight - cm.display.wrapper.clientHeight < scrollerCutOff - 3;
   }
 
-  // Prepare DOM reads needed to update the scrollbars. Done in one
-  // shot to minimize update/measure roundtrips.
+  // Prepare DOM reads needed to write the scrollbars. Done in one
+  // shot to minimize write/measure roundtrips.
   function measureForScrollbars(cm) {
     var scroll = cm.display.scroller;
     return {
@@ -412,7 +412,7 @@
 
   // Re-synchronize the fake scrollbars with the actual size of the
   // content.
-  function updateScrollbars(cm, measure) {
+  function writeScrollbars(cm, measure) {
     if (!measure) measure = measureForScrollbars(cm);
     var d = cm.display, sWidth = scrollbarWidth(d.measure);
     var scrollHeight = measure.docHeight + scrollerCutOff;
@@ -510,7 +510,7 @@
   }
 
   // Used to ensure that the line number gutter is still the right
-  // size for the current document size. Returns true when an update
+  // size for the current document size. Returns true when an write
   // is needed.
   function maybeUpdateLineNumberWidth(cm) {
     if (!cm.options.lineNumbers) return false;
@@ -524,7 +524,7 @@
       display.lineNumWidth = display.lineNumInnerWidth + padding;
       display.lineNumChars = display.lineNumInnerWidth ? last.length : -1;
       display.lineGutter.style.width = display.lineNumWidth + "px";
-      updateGutterSpace(cm);
+      writeGutterSpace(cm);
       return true;
     }
     return false;
@@ -560,29 +560,29 @@
   // Does the actual updating of the line display. Bails out
   // (returning false) when there is nothing to be done and forced is
   // false.
-  function updateDisplayIfNeeded(cm, update) {
+  function writeDisplayIfNeeded(cm, write) {
     var display = cm.display, doc = cm.doc;
-    if (update.editorIsHidden) {
+    if (write.editorIsHidden) {
       resetView(cm);
       return false;
     }
 
     // Bail out if the visible area is already rendered and nothing changed.
-    if (!update.force &&
-        update.visible.from >= display.viewFrom && update.visible.to <= display.viewTo &&
-        (display.updateLineNumbers == null || display.updateLineNumbers >= display.viewTo) &&
+    if (!write.force &&
+        write.visible.from >= display.viewFrom && write.visible.to <= display.viewTo &&
+        (display.writeLineNumbers == null || display.writeLineNumbers >= display.viewTo) &&
         countDirtyView(cm) == 0)
       return false;
 
     if (maybeUpdateLineNumberWidth(cm)) {
       resetView(cm);
-      update.dims = getDimensions(cm);
+      write.dims = getDimensions(cm);
     }
 
     // Compute a suitable new viewport (from & to)
     var end = doc.first + doc.size;
-    var from = Math.max(update.visible.from - cm.options.viewportMargin, doc.first);
-    var to = Math.min(end, update.visible.to + cm.options.viewportMargin);
+    var from = Math.max(write.visible.from - cm.options.viewportMargin, doc.first);
+    var to = Math.min(end, write.visible.to + cm.options.viewportMargin);
     if (display.viewFrom < from && from - display.viewFrom < 20) from = Math.max(doc.first, display.viewFrom);
     if (display.viewTo > to && display.viewTo - to < 20) to = Math.min(end, display.viewTo);
     if (sawCollapsedSpans) {
@@ -591,7 +591,7 @@
     }
 
     var different = from != display.viewFrom || to != display.viewTo ||
-      display.lastSizeC != update.wrapperHeight;
+      display.lastSizeC != write.wrapperHeight;
     adjustView(cm, from, to);
 
     display.viewOffset = heightAtLine(getLine(cm.doc, display.viewFrom));
@@ -599,18 +599,18 @@
     cm.display.mover.style.top = display.viewOffset + "px";
 
     var toUpdate = countDirtyView(cm);
-    if (!different && toUpdate == 0 && !update.force &&
-        (display.updateLineNumbers == null || display.updateLineNumbers >= display.viewTo))
+    if (!different && toUpdate == 0 && !write.force &&
+        (display.writeLineNumbers == null || display.writeLineNumbers >= display.viewTo))
       return false;
 
     // For big changes, we hide the enclosing element during the
-    // update, since that speeds up the operations on most browsers.
+    // write, since that speeds up the operations on most browsers.
     var focused = activeElt();
     if (toUpdate > 4) display.lineDiv.style.display = "none";
-    patchDisplay(cm, display.updateLineNumbers, update.dims);
+    patchDisplay(cm, display.writeLineNumbers, write.dims);
     if (toUpdate > 4) display.lineDiv.style.display = "";
     // There might have been a widget with a focused element that got
-    // hidden or updated, if so re-focus it.
+    // hidden or writed, if so re-focus it.
     if (focused && activeElt() != focused && focused.offsetHeight) focused.focus();
 
     // Prevent selection and cursors from interfering with the scroll
@@ -619,19 +619,19 @@
     removeChildren(display.selectionDiv);
 
     if (different) {
-      display.lastSizeC = update.wrapperHeight;
+      display.lastSizeC = write.wrapperHeight;
       startWorker(cm, 400);
     }
 
-    display.updateLineNumbers = null;
+    display.writeLineNumbers = null;
 
     return true;
   }
 
-  function postUpdateDisplay(cm, update) {
-    var force = update.force, viewport = update.viewport;
+  function postUpdateDisplay(cm, write) {
+    var force = write.force, viewport = write.viewport;
     for (var first = true;; first = false) {
-      if (first && cm.options.lineWrapping && update.oldScrollerWidth != cm.display.scroller.clientWidth) {
+      if (first && cm.options.lineWrapping && write.oldScrollerWidth != cm.display.scroller.clientWidth) {
         force = true;
       } else {
         force = false;
@@ -641,32 +641,32 @@
                                     cm.display.scroller.clientHeight, viewport.top)};
         // Updated line heights might result in the drawn area not
         // actually covering the viewport. Keep looping until it does.
-        update.visible = visibleLines(cm.display, cm.doc, viewport);
-        if (update.visible.from >= cm.display.viewFrom && update.visible.to <= cm.display.viewTo)
+        write.visible = visibleLines(cm.display, cm.doc, viewport);
+        if (write.visible.from >= cm.display.viewFrom && write.visible.to <= cm.display.viewTo)
           break;
       }
-      if (!updateDisplayIfNeeded(cm, update)) break;
-      updateHeightsInViewport(cm);
+      if (!writeDisplayIfNeeded(cm, write)) break;
+      writeHeightsInViewport(cm);
       var barMeasure = measureForScrollbars(cm);
-      updateSelection(cm);
+      writeSelection(cm);
       setDocumentHeight(cm, barMeasure);
-      updateScrollbars(cm, barMeasure);
+      writeScrollbars(cm, barMeasure);
     }
 
-    signalLater(cm, "update", cm);
-    if (cm.display.viewFrom != update.oldViewFrom || cm.display.viewTo != update.oldViewTo)
+    signalLater(cm, "write", cm);
+    if (cm.display.viewFrom != write.oldViewFrom || cm.display.viewTo != write.oldViewTo)
       signalLater(cm, "viewportChange", cm, cm.display.viewFrom, cm.display.viewTo);
   }
 
-  function updateDisplaySimple(cm, viewport) {
-    var update = new DisplayUpdate(cm, viewport);
-    if (updateDisplayIfNeeded(cm, update)) {
-      updateHeightsInViewport(cm);
-      postUpdateDisplay(cm, update);
+  function writeDisplaySimple(cm, viewport) {
+    var write = new DisplayUpdate(cm, viewport);
+    if (writeDisplayIfNeeded(cm, write)) {
+      writeHeightsInViewport(cm);
+      postUpdateDisplay(cm, write);
       var barMeasure = measureForScrollbars(cm);
-      updateSelection(cm);
+      writeSelection(cm);
       setDocumentHeight(cm, barMeasure);
-      updateScrollbars(cm, barMeasure);
+      writeScrollbars(cm, barMeasure);
     }
   }
 
@@ -684,9 +684,9 @@
     }
   }
 
-  // Read the actual heights of the rendered lines, and update their
+  // Read the actual heights of the rendered lines, and write their
   // stored heights to match.
-  function updateHeightsInViewport(cm) {
+  function writeHeightsInViewport(cm) {
     var display = cm.display;
     var prevBottom = display.lineDiv.offsetTop;
     for (var i = 0; i < display.view.length; i++) {
@@ -703,17 +703,17 @@
       var diff = cur.line.height - height;
       if (height < 2) height = textHeight(display);
       if (diff > .001 || diff < -.001) {
-        updateLineHeight(cur.line, height);
-        updateWidgetHeight(cur.line);
+        writeLineHeight(cur.line, height);
+        writeWidgetHeight(cur.line);
         if (cur.rest) for (var j = 0; j < cur.rest.length; j++)
-          updateWidgetHeight(cur.rest[j]);
+          writeWidgetHeight(cur.rest[j]);
       }
     }
   }
 
   // Read and store the height of line widgets associated with the
   // given line.
-  function updateWidgetHeight(line) {
+  function writeWidgetHeight(line) {
     if (line.widgets) for (var i = 0; i < line.widgets.length; ++i)
       line.widgets[i].height = line.widgets[i].node.offsetHeight;
   }
@@ -738,7 +738,7 @@
   // nodes for lines that are no longer in view, and creating the ones
   // that are not there yet, and updating the ones that are out of
   // date.
-  function patchDisplay(cm, updateNumbersFrom, dims) {
+  function patchDisplay(cm, writeNumbersFrom, dims) {
     var display = cm.display, lineNumbers = cm.options.lineNumbers;
     var container = display.lineDiv, cur = container.firstChild;
 
@@ -763,13 +763,13 @@
         container.insertBefore(node, cur);
       } else { // Already drawn
         while (cur != lineView.node) cur = rm(cur);
-        var updateNumber = lineNumbers && updateNumbersFrom != null &&
-          updateNumbersFrom <= lineN && lineView.lineNumber;
+        var writeNumber = lineNumbers && writeNumbersFrom != null &&
+          writeNumbersFrom <= lineN && lineView.lineNumber;
         if (lineView.changes) {
-          if (indexOf(lineView.changes, "gutter") > -1) updateNumber = false;
-          updateLineForChanges(cm, lineView, lineN, dims);
+          if (indexOf(lineView.changes, "gutter") > -1) writeNumber = false;
+          writeLineForChanges(cm, lineView, lineN, dims);
         }
-        if (updateNumber) {
+        if (writeNumber) {
           removeChildren(lineView.lineNumber);
           lineView.lineNumber.appendChild(document.createTextNode(lineNumberFor(cm.options, lineN)));
         }
@@ -781,15 +781,15 @@
   }
 
   // When an aspect of a line changes, a string is added to
-  // lineView.changes. This updates the relevant part of the line's
+  // lineView.changes. This writes the relevant part of the line's
   // DOM structure.
-  function updateLineForChanges(cm, lineView, lineN, dims) {
+  function writeLineForChanges(cm, lineView, lineN, dims) {
     for (var j = 0; j < lineView.changes.length; j++) {
       var type = lineView.changes[j];
-      if (type == "text") updateLineText(cm, lineView);
-      else if (type == "gutter") updateLineGutter(cm, lineView, lineN, dims);
-      else if (type == "class") updateLineClasses(lineView);
-      else if (type == "widget") updateLineWidgets(lineView, dims);
+      if (type == "text") writeLineText(cm, lineView);
+      else if (type == "gutter") writeLineGutter(cm, lineView, lineN, dims);
+      else if (type == "class") writeLineClasses(lineView);
+      else if (type == "widget") writeLineWidgets(lineView, dims);
     }
     lineView.changes = null;
   }
@@ -807,7 +807,7 @@
     return lineView.node;
   }
 
-  function updateLineBackground(lineView) {
+  function writeLineBackground(lineView) {
     var cls = lineView.bgClass ? lineView.bgClass + " " + (lineView.line.bgClass || "") : lineView.line.bgClass;
     if (cls) cls += " CodeMirror-linebackground";
     if (lineView.background) {
@@ -834,7 +834,7 @@
   // Redraw the line's text. Interacts with the background and text
   // classes because the mode may output tokens that influence these
   // classes.
-  function updateLineText(cm, lineView) {
+  function writeLineText(cm, lineView) {
     var cls = lineView.text.className;
     var built = getLineContent(cm, lineView);
     if (lineView.text == lineView.node) lineView.node = built.pre;
@@ -843,14 +843,14 @@
     if (built.bgClass != lineView.bgClass || built.textClass != lineView.textClass) {
       lineView.bgClass = built.bgClass;
       lineView.textClass = built.textClass;
-      updateLineClasses(lineView);
+      writeLineClasses(lineView);
     } else if (cls) {
       lineView.text.className = cls;
     }
   }
 
-  function updateLineClasses(lineView) {
-    updateLineBackground(lineView);
+  function writeLineClasses(lineView) {
+    writeLineBackground(lineView);
     if (lineView.line.wrapClass)
       ensureLineWrapped(lineView).className = lineView.line.wrapClass;
     else if (lineView.node != lineView.text)
@@ -859,7 +859,7 @@
     lineView.text.className = textClass || "";
   }
 
-  function updateLineGutter(cm, lineView, lineN, dims) {
+  function writeLineGutter(cm, lineView, lineN, dims) {
     if (lineView.gutter) {
       lineView.node.removeChild(lineView.gutter);
       lineView.gutter = null;
@@ -886,7 +886,7 @@
     }
   }
 
-  function updateLineWidgets(lineView, dims) {
+  function writeLineWidgets(lineView, dims) {
     if (lineView.alignable) lineView.alignable = null;
     for (var node = lineView.node.firstChild, next; node; node = next) {
       var next = node.nextSibling;
@@ -903,8 +903,8 @@
     if (built.bgClass) lineView.bgClass = built.bgClass;
     if (built.textClass) lineView.textClass = built.textClass;
 
-    updateLineClasses(lineView);
-    updateLineGutter(cm, lineView, lineN, dims);
+    writeLineClasses(lineView);
+    writeLineGutter(cm, lineView, lineN, dims);
     insertLineWidgets(lineView, dims);
     return lineView.node;
   }
@@ -1066,7 +1066,7 @@
     return out;
   }
 
-  // SELECTION UPDATES
+  // SELECTION WRITES
 
   // The 'scroll' parameter given to many of these indicated whether
   // the new cursor position should be scrolled into view after
@@ -1121,11 +1121,11 @@
   }
 
   // Give beforeSelectionChange handlers a change to influence a
-  // selection update.
+  // selection write.
   function filterSelectionChange(doc, sel) {
     var obj = {
       ranges: sel.ranges,
-      update: function(ranges) {
+      write: function(ranges) {
         this.ranges = [];
         for (var i = 0; i < ranges.length; i++)
           this.ranges[i] = new Range(clipPos(doc, ranges[i].anchor),
@@ -1172,7 +1172,7 @@
     doc.sel = sel;
 
     if (doc.cm) {
-      doc.cm.curOp.updateInput = doc.cm.curOp.selectionChanged = true;
+      doc.cm.curOp.writeInput = doc.cm.curOp.selectionChanged = true;
       signalCursorActivity(doc.cm);
     }
     signalLater(doc, "cursorActivity", doc);
@@ -1290,7 +1290,7 @@
     }
   }
 
-  function updateSelection(cm) {
+  function writeSelection(cm) {
     showSelection(cm, drawSelection(cm));
   }
 
@@ -1534,7 +1534,7 @@
 
   // Render a line into the hidden node display.externalMeasured. Used
   // when measurement is needed for a line that's not in the viewport.
-  function updateExternalMeasurement(cm, line) {
+  function writeExternalMeasurement(cm, line) {
     line = visualLine(line);
     var lineN = lineNo(line);
     var view = cm.display.externalMeasured = new LineView(cm.doc, line, lineN);
@@ -1571,9 +1571,9 @@
     if (view && !view.text)
       view = null;
     else if (view && view.changes)
-      updateLineForChanges(cm, view, lineN, getDimensions(cm));
+      writeLineForChanges(cm, view, lineN, getDimensions(cm));
     if (!view)
-      view = updateExternalMeasurement(cm, line);
+      view = writeExternalMeasurement(cm, line);
 
     var info = mapFromLineView(view, line, lineN);
     return {
@@ -1816,7 +1816,7 @@
   }
 
   // Used to cheaply estimate the coordinates for a position. Used for
-  // intermediate scroll updates.
+  // intermediate scroll writes.
   function estimateCoords(cm, pos) {
     var left = 0, pos = clipPos(cm.doc, pos);
     if (!cm.options.lineWrapping) left = charWidth(cm.display) * pos.ch;
@@ -1936,9 +1936,9 @@
   // OPERATIONS
 
   // Operations are used to wrap a series of changes to the editor
-  // state in such a way that each change won't have to update the
+  // state in such a way that each change won't have to write the
   // cursor and display (which would be awkward, slow, and
-  // error-prone). Instead, display updates are batched and then all
+  // error-prone). Instead, display writes are batched and then all
   // combined and executed at once.
 
   var operationGroup = null;
@@ -1949,15 +1949,15 @@
     cm.curOp = {
       cm: cm,
       viewChanged: false,      // Flag that indicates that lines might need to be redrawn
-      startHeight: cm.doc.height, // Used to detect need to update scrollbar
+      startHeight: cm.doc.height, // Used to detect need to write scrollbar
       forceUpdate: false,      // Used to force a redraw
-      updateInput: null,       // Whether to reset the input textarea
+      writeInput: null,       // Whether to reset the input textarea
       typing: false,           // Whether this reset should be careful to leave existing text (for compositing)
       changeObjs: null,        // Accumulated changes, for firing change events
       cursorActivityHandlers: null, // Set of handlers to fire cursorActivity on
       cursorActivityCalled: 0, // Tracks which cursorActivity handlers have been called already
       selectionChanged: false, // Whether the selection needs to be redrawn
-      updateMaxLine: false,    // Set when the widest line needs to be determined anew
+      writeMaxLine: false,    // Set when the widest line needs to be determined anew
       scrollLeft: null, scrollTop: null, // Intermediate scroll position, not pushed to DOM yet
       scrollToPos: null,       // Used to scroll to a specific position
       id: ++nextOpId           // Unique ID
@@ -2002,7 +2002,7 @@
     }
   }
 
-  // The DOM updates done when an operation finishes are batched so
+  // The DOM writes done when an operation finishes are batched so
   // that the minimum number of relayouts are required.
   function endOperations(group) {
     var ops = group.ops;
@@ -2020,36 +2020,36 @@
 
   function endOperation_R1(op) {
     var cm = op.cm, display = cm.display;
-    if (op.updateMaxLine) findMaxLine(cm);
+    if (op.writeMaxLine) findMaxLine(cm);
 
     op.mustUpdate = op.viewChanged || op.forceUpdate || op.scrollTop != null ||
       op.scrollToPos && (op.scrollToPos.from.line < display.viewFrom ||
                          op.scrollToPos.to.line >= display.viewTo) ||
       display.maxLineChanged && cm.options.lineWrapping;
-    op.update = op.mustUpdate &&
+    op.write = op.mustUpdate &&
       new DisplayUpdate(cm, op.mustUpdate && {top: op.scrollTop, ensure: op.scrollToPos}, op.forceUpdate);
   }
 
   function endOperation_W1(op) {
-    op.updatedDisplay = op.mustUpdate && updateDisplayIfNeeded(op.cm, op.update);
+    op.writedDisplay = op.mustUpdate && writeDisplayIfNeeded(op.cm, op.write);
   }
 
   function endOperation_R2(op) {
     var cm = op.cm, display = cm.display;
-    if (op.updatedDisplay) updateHeightsInViewport(cm);
+    if (op.writedDisplay) writeHeightsInViewport(cm);
 
     op.barMeasure = measureForScrollbars(cm);
 
     // If the max line changed since it was last measured, measure it,
     // and ensure the document's width matches it.
-    // updateDisplay_W2 will use these properties to do the actual resizing
+    // writeDisplay_W2 will use these properties to do the actual resizing
     if (display.maxLineChanged && !cm.options.lineWrapping) {
       op.adjustWidthTo = measureChar(cm, display.maxLine, display.maxLine.text.length).left + 3;
       op.maxScrollLeft = Math.max(0, display.sizer.offsetLeft + op.adjustWidthTo +
                                   scrollerCutOff - display.scroller.clientWidth);
     }
 
-    if (op.updatedDisplay || op.selectionChanged)
+    if (op.writedDisplay || op.selectionChanged)
       op.newSelectionNodes = drawSelection(cm);
   }
 
@@ -2065,14 +2065,14 @@
 
     if (op.newSelectionNodes)
       showSelection(cm, op.newSelectionNodes);
-    if (op.updatedDisplay)
+    if (op.writedDisplay)
       setDocumentHeight(cm, op.barMeasure);
-    if (op.updatedDisplay || op.startHeight != cm.doc.height)
-      updateScrollbars(cm, op.barMeasure);
+    if (op.writedDisplay || op.startHeight != cm.doc.height)
+      writeScrollbars(cm, op.barMeasure);
 
     if (op.selectionChanged) restartBlink(cm);
 
-    if (cm.state.focused && op.updateInput)
+    if (cm.state.focused && op.writeInput)
       resetInput(cm, op.typing);
   }
 
@@ -2080,9 +2080,9 @@
     var cm = op.cm, display = cm.display, doc = cm.doc;
 
     if (op.adjustWidthTo != null && Math.abs(op.barMeasure.scrollWidth - cm.display.scroller.scrollWidth) > 1)
-      updateScrollbars(cm);
+      writeScrollbars(cm);
 
-    if (op.updatedDisplay) postUpdateDisplay(cm, op.update);
+    if (op.writedDisplay) postUpdateDisplay(cm, op.write);
 
     // Abort mouse wheel delta measurement, when scrolling explicitly
     if (display.wheelStartX != null && (op.scrollTop != null || op.scrollLeft != null || op.scrollToPos))
@@ -2117,13 +2117,13 @@
       doc.scrollTop = cm.display.scroller.scrollTop;
 
     // Apply workaround for two webkit bugs
-    if (op.updatedDisplay && webkit) {
+    if (op.writedDisplay && webkit) {
       if (cm.options.lineWrapping)
         checkForWebkitWidthBug(cm, op.barMeasure); // (Issue #2420)
       if (op.barMeasure.scrollWidth > op.barMeasure.clientWidth &&
           op.barMeasure.scrollWidth < op.barMeasure.clientWidth + 1 &&
           !hScrollbarTakesSpace(cm))
-        updateScrollbars(cm); // (Issue #2562)
+        writeScrollbars(cm); // (Issue #2562)
     }
 
     // Fire change events, and delayed event handlers
@@ -2207,8 +2207,8 @@
 
     var display = cm.display;
     if (lendiff && to < display.viewTo &&
-        (display.updateLineNumbers == null || display.updateLineNumbers > from))
-      display.updateLineNumbers = from;
+        (display.writeLineNumbers == null || display.writeLineNumbers > from))
+      display.writeLineNumbers = from;
 
     cm.curOp.viewChanged = true;
 
@@ -2385,7 +2385,7 @@
   // was made out of.
   var lastCopied = null;
 
-  // Read input from the textarea, and update the document to match.
+  // Read input from the textarea, and write the document to match.
   // When something is selected, it is present in the textarea, and
   // selected (unless it is huge, in which case a placeholder is
   // used). When nothing is selected, the cursor sits after previously
@@ -2446,7 +2446,7 @@
       // Handle overwrite
       else if (cm.state.overwrite && range.empty() && !cm.state.pasteIncoming)
         to = Pos(to.line, Math.min(getLine(doc, to.line).text.length, to.ch + lst(textLines).length));
-      var updateInput = cm.curOp.updateInput;
+      var writeInput = cm.curOp.writeInput;
       var changeEvent = {from: from, to: to, text: multiPaste ? multiPaste[i % multiPaste.length] : textLines,
                          origin: cm.state.pasteIncoming ? "paste" : cm.state.cutIncoming ? "cut" : "+input"};
       makeChange(cm.doc, changeEvent);
@@ -2470,7 +2470,7 @@
       }
     }
     ensureCursorVisible(cm);
-    cm.curOp.updateInput = updateInput;
+    cm.curOp.writeInput = writeInput;
     cm.curOp.typing = true;
 
     // Don't leave long text in the textarea, since it makes further polling slow
@@ -2542,7 +2542,7 @@
     if (!captureRightClick) on(d.scroller, "contextmenu", function(e) {onContextMenu(cm, e);});
 
     // Sync scrolling between fake scrollbars and real scrollable
-    // area, ensure viewport is updated when scrolling.
+    // area, ensure viewport is writed when scrolling.
     on(d.scroller, "scroll", function() {
       if (d.scroller.clientHeight) {
         setScrollTop(cm, d.scroller.scrollTop);
@@ -2557,7 +2557,7 @@
       if (d.scroller.clientHeight) setScrollLeft(cm, d.scrollbarH.scrollLeft);
     });
 
-    // Listen to wheel events in order to try and update the viewport on time.
+    // Listen to wheel events in order to try and write the viewport on time.
     on(d.scroller, "mousewheel", function(e){onScrollWheel(cm, e);});
     on(d.scroller, "DOMMouseScroll", function(e){onScrollWheel(cm, e);});
 
@@ -3034,10 +3034,10 @@
   function setScrollTop(cm, val) {
     if (Math.abs(cm.doc.scrollTop - val) < 2) return;
     cm.doc.scrollTop = val;
-    if (!gecko) updateDisplaySimple(cm, {top: val});
+    if (!gecko) writeDisplaySimple(cm, {top: val});
     if (cm.display.scroller.scrollTop != val) cm.display.scroller.scrollTop = val;
     if (cm.display.scrollbarV.scrollTop != val) cm.display.scrollbarV.scrollTop = val;
-    if (gecko) updateDisplaySimple(cm);
+    if (gecko) writeDisplaySimple(cm);
     startWorker(cm, 100);
   }
   // Sync scroller and scrollbar, ensure the gutter elements are
@@ -3059,7 +3059,7 @@
   // offsets afterwards.
   //
   // The reason we want to know the amount a wheel event will scroll
-  // is that it gives us a chance to update the display before the
+  // is that it gives us a chance to write the display before the
   // actual scrolling happens, reducing flickering.
 
   var wheelSamples = 0, wheelPixelsPerUnit = null;
@@ -3120,7 +3120,7 @@
       var top = cm.doc.scrollTop, bot = top + display.wrapper.clientHeight;
       if (pixels < 0) top = Math.max(0, top + pixels - 50);
       else bot = Math.min(cm.doc.height, bot + pixels + 50);
-      updateDisplaySimple(cm, {top: top, bottom: bot});
+      writeDisplaySimple(cm, {top: top, bottom: bot});
     }
 
     if (wheelSamples < 20) {
@@ -3453,7 +3453,7 @@
   }
 
   // Allow "beforeChange" event handlers to influence a change
-  function filterChange(doc, change, update) {
+  function filterChange(doc, change, write) {
     var obj = {
       canceled: false,
       from: change.from,
@@ -3462,7 +3462,7 @@
       origin: change.origin,
       cancel: function() { this.canceled = true; }
     };
-    if (update) obj.update = function(from, to, text, origin) {
+    if (write) obj.write = function(from, to, text, origin) {
       if (from) this.from = clipPos(doc, from);
       if (to) this.to = clipPos(doc, to);
       if (text) this.text = text;
@@ -3488,7 +3488,7 @@
       if (!change) return;
     }
 
-    // Possibly split or suppress the update based on the presence
+    // Possibly split or suppress the write based on the presence
     // of read-only spans in its range.
     var split = sawReadOnlySpans && !ignoreReadOnly && removeReadOnlyRanges(doc, change.from, change.to);
     if (split) {
@@ -3626,7 +3626,7 @@
 
     if (!selAfter) selAfter = computeSelAfterChange(doc, change);
     if (doc.cm) makeChangeSingleDocInEditor(doc.cm, change, spans);
-    else updateDoc(doc, change, spans);
+    else writeDoc(doc, change, spans);
     setSelectionNoUndo(doc, selAfter, sel_dontScroll);
   }
 
@@ -3649,7 +3649,7 @@
     if (doc.sel.contains(change.from, change.to) > -1)
       signalCursorActivity(cm);
 
-    updateDoc(doc, change, spans, estimateHeight(cm));
+    writeDoc(doc, change, spans, estimateHeight(cm));
 
     if (!cm.options.lineWrapping) {
       doc.iter(checkWidthStart, from.line + change.text.length, function(line) {
@@ -3661,7 +3661,7 @@
           recomputeMaxLength = false;
         }
       });
-      if (recomputeMaxLength) cm.curOp.updateMaxLine = true;
+      if (recomputeMaxLength) cm.curOp.writeMaxLine = true;
     }
 
     // Adjust frontier, schedule worker
@@ -4430,7 +4430,7 @@
       this.curOp.forceUpdate = true;
       clearCaches(this);
       this.scrollTo(this.doc.scrollLeft, this.doc.scrollTop);
-      updateGutterSpace(this);
+      writeGutterSpace(this);
       if (oldHeight == null || Math.abs(oldHeight - textHeight(this.display)) > .5)
         estimateLineHeights(this);
       signal(this, "refresh", this);
@@ -4514,14 +4514,14 @@
     cm.display.gutters.style.left = val ? compensateForHScroll(cm.display) + "px" : "0";
     cm.refresh();
   }, true);
-  option("coverGutterNextToScrollbar", false, updateScrollbars, true);
+  option("coverGutterNextToScrollbar", false, writeScrollbars, true);
   option("lineNumbers", false, function(cm) {
     setGuttersForLineNumbers(cm.options);
     guttersChanged(cm);
   }, true);
   option("firstLineNumber", 1, guttersChanged, true);
   option("lineNumberFormatter", function(integer) {return integer;}, guttersChanged, true);
-  option("showCursorWhenSelecting", false, updateSelection, true);
+  option("showCursorWhenSelecting", false, writeSelection, true);
 
   option("resetSelectionOnContextMenu", true);
 
@@ -4540,8 +4540,8 @@
 
   option("cursorBlinkRate", 530);
   option("cursorScrollMargin", 0);
-  option("cursorHeight", 1, updateSelection, true);
-  option("singleCursorHeightPerLine", true, updateSelection, true);
+  option("cursorHeight", 1, writeSelection, true);
+  option("singleCursorHeightPerLine", true, writeSelection, true);
   option("workTime", 100);
   option("workDelay", 100);
   option("flattenSpans", true, resetModeState, true);
@@ -5115,7 +5115,7 @@
       }
       line.markedSpans = removeMarkedSpan(line.markedSpans, span);
       if (span.from == null && this.collapsed && !lineIsHidden(this.doc, line) && cm)
-        updateLineHeight(line, textHeight(cm.display));
+        writeLineHeight(line, textHeight(cm.display));
     }
     if (cm && this.collapsed && !cm.options.lineWrapping) for (var i = 0; i < this.lines.length; ++i) {
       var visual = visualLine(this.lines[i]), len = lineLength(visual);
@@ -5173,13 +5173,13 @@
         clearLineMeasurementCacheFor(view);
         cm.curOp.selectionChanged = cm.curOp.forceUpdate = true;
       }
-      cm.curOp.updateMaxLine = true;
+      cm.curOp.writeMaxLine = true;
       if (!lineIsHidden(widget.doc, line) && widget.height != null) {
         var oldHeight = widget.height;
         widget.height = null;
         var dHeight = widgetHeight(widget) - oldHeight;
         if (dHeight)
-          updateLineHeight(line, line.height + dHeight);
+          writeLineHeight(line, line.height + dHeight);
       }
     });
   };
@@ -5236,11 +5236,11 @@
     if (marker.addToHistory)
       addChangeToHistory(doc, {from: from, to: to, origin: "markText"}, doc.sel, NaN);
 
-    var curLine = from.line, cm = doc.cm, updateMaxLine;
+    var curLine = from.line, cm = doc.cm, writeMaxLine;
     doc.iter(curLine, to.line + 1, function(line) {
       if (cm && marker.collapsed && !cm.options.lineWrapping && visualLine(line) == cm.display.maxLine)
-        updateMaxLine = true;
-      if (marker.collapsed && curLine != from.line) updateLineHeight(line, 0);
+        writeMaxLine = true;
+      if (marker.collapsed && curLine != from.line) writeLineHeight(line, 0);
       addMarkedSpan(line, new MarkedSpan(marker,
                                          curLine == from.line ? from.ch : null,
                                          curLine == to.line ? to.ch : null));
@@ -5248,7 +5248,7 @@
     });
     // lineIsHidden depends on the presence of the spans, so needs a second pass
     if (marker.collapsed) doc.iter(from.line, to.line + 1, function(line) {
-      if (lineIsHidden(doc, line)) updateLineHeight(line, 0);
+      if (lineIsHidden(doc, line)) writeLineHeight(line, 0);
     });
 
     if (marker.clearOnEnter) on(marker, "beforeCursorEnter", function() { marker.clear(); });
@@ -5264,7 +5264,7 @@
     }
     if (cm) {
       // Sync editor state
-      if (updateMaxLine) cm.curOp.updateMaxLine = true;
+      if (writeMaxLine) cm.curOp.writeMaxLine = true;
       if (marker.collapsed)
         regChange(cm, from.line, to.line + 1);
       else if (marker.className || marker.title || marker.startStyle || marker.endStyle)
@@ -5696,7 +5696,7 @@
     runInOp(cm, function() {
       adjustScrollWhenAboveVisible(cm, line, -height);
       regLineChange(cm, no, "widget");
-      updateLineHeight(line, Math.max(0, line.height - height));
+      writeLineHeight(line, Math.max(0, line.height - height));
     });
   };
   LineWidget.prototype.changed = function() {
@@ -5707,7 +5707,7 @@
     runInOp(cm, function() {
       cm.curOp.forceUpdate = true;
       adjustScrollWhenAboveVisible(cm, line, diff);
-      updateLineHeight(line, line.height + diff);
+      writeLineHeight(line, line.height + diff);
     });
   };
 
@@ -5732,7 +5732,7 @@
       widget.line = line;
       if (!lineIsHidden(cm.doc, line)) {
         var aboveVisible = heightAtLine(line) < cm.doc.scrollTop;
-        updateLineHeight(line, line.height + widgetHeight(widget));
+        writeLineHeight(line, line.height + widgetHeight(widget));
         if (aboveVisible) addToScrollPos(cm, null, widget.height);
         cm.curOp.forceUpdate = true;
       }
@@ -5756,7 +5756,7 @@
   // Change the content (text, markers) of a line. Automatically
   // invalidates cached information and tries to re-estimate the
   // line's height.
-  function updateLine(line, text, markedSpans, estimateHeight) {
+  function writeLine(line, text, markedSpans, estimateHeight) {
     line.text = text;
     if (line.stateAfter) line.stateAfter = null;
     if (line.styles) line.styles = null;
@@ -5764,7 +5764,7 @@
     detachMarkedSpans(line);
     attachMarkedSpans(line, markedSpans);
     var estHeight = estimateHeight ? estimateHeight(line) : 1;
-    if (estHeight != line.height) updateLineHeight(line, estHeight);
+    if (estHeight != line.height) writeLineHeight(line, estHeight);
   }
 
   // Detach a line from the document tree and its markers.
@@ -5889,7 +5889,7 @@
   }
 
   // Lightweight form of highlight -- proceed over this line and
-  // update state, but don't save a style array. Used for lines that
+  // write state, but don't save a style array. Used for lines that
   // aren't currently visible.
   function processLine(cm, text, state, startAt) {
     var mode = cm.doc.mode;
@@ -6129,7 +6129,7 @@
 
   // DOCUMENT DATA STRUCTURE
 
-  // By default, updates that start and end at the beginning of a line
+  // By default, writes that start and end at the beginning of a line
   // are treated specially, in order to make the association of line
   // widgets and marker elements with the text behave more intuitive.
   function isWholeLineUpdate(doc, change) {
@@ -6138,10 +6138,10 @@
   }
 
   // Perform a change on the document data structure.
-  function updateDoc(doc, change, markedSpans, estimateHeight) {
+  function writeDoc(doc, change, markedSpans, estimateHeight) {
     function spansFor(n) {return markedSpans ? markedSpans[n] : null;}
-    function update(line, text, spans) {
-      updateLine(line, text, spans, estimateHeight);
+    function write(line, text, spans) {
+      writeLine(line, text, spans, estimateHeight);
       signalLater(line, "change", line, change);
     }
 
@@ -6155,25 +6155,25 @@
       // sure line objects move the way they are supposed to.
       for (var i = 0, added = []; i < text.length - 1; ++i)
         added.push(new Line(text[i], spansFor(i), estimateHeight));
-      update(lastLine, lastLine.text, lastSpans);
+      write(lastLine, lastLine.text, lastSpans);
       if (nlines) doc.remove(from.line, nlines);
       if (added.length) doc.insert(from.line, added);
     } else if (firstLine == lastLine) {
       if (text.length == 1) {
-        update(firstLine, firstLine.text.slice(0, from.ch) + lastText + firstLine.text.slice(to.ch), lastSpans);
+        write(firstLine, firstLine.text.slice(0, from.ch) + lastText + firstLine.text.slice(to.ch), lastSpans);
       } else {
         for (var added = [], i = 1; i < text.length - 1; ++i)
           added.push(new Line(text[i], spansFor(i), estimateHeight));
         added.push(new Line(lastText + firstLine.text.slice(to.ch), lastSpans, estimateHeight));
-        update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
+        write(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
         doc.insert(from.line + 1, added);
       }
     } else if (text.length == 1) {
-      update(firstLine, firstLine.text.slice(0, from.ch) + text[0] + lastLine.text.slice(to.ch), spansFor(0));
+      write(firstLine, firstLine.text.slice(0, from.ch) + text[0] + lastLine.text.slice(to.ch), spansFor(0));
       doc.remove(from.line + 1, nlines);
     } else {
-      update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
-      update(lastLine, lastText + lastLine.text.slice(to.ch), lastSpans);
+      write(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
+      write(lastLine, lastText + lastLine.text.slice(to.ch), lastSpans);
       for (var i = 1, added = []; i < text.length - 1; ++i)
         added.push(new Line(text[i], spansFor(i), estimateHeight));
       if (nlines > 1) doc.remove(from.line + 1, nlines - 1);
@@ -6352,7 +6352,7 @@
     this.modeOption = mode;
 
     if (typeof text == "string") text = splitLines(text);
-    updateDoc(this, {from: start, to: start, text: text});
+    writeDoc(this, {from: start, to: start, text: text});
     setSelection(this, simpleSelection(start), sel_dontScroll);
   };
 
@@ -6749,7 +6749,7 @@
 
   // Update the height of a line, propagating the height change
   // upwards to parent nodes.
-  function updateLineHeight(line, height) {
+  function writeLineHeight(line, height) {
     var diff = height - line.height;
     if (diff) for (var n = line; n; n = n.parent) n.height += diff;
   }
@@ -6836,7 +6836,7 @@
     this.generation = this.maxGeneration = startGen || 1;
   }
 
-  // Create a history change event from an updateDoc-style change
+  // Create a history change event from an writeDoc-style change
   // object.
   function historyChangeFromChange(doc, change) {
     var histChange = {from: copyPos(change.from), to: changeEnd(change), text: getBetween(doc, change.from, change.to)};
@@ -7024,10 +7024,10 @@
   // Tries to rebase an array of history events given a change in the
   // document. If the change touches the same lines as the event, the
   // event, and everything 'behind' it, is discarded. If the change is
-  // before the event, the event's positions are updated. Uses a
+  // before the event, the event's positions are writed. Uses a
   // copy-on-write scheme for the positions, to avoid having to
   // reallocate them all on every rebase, but also avoid problems with
-  // shared position objects being unsafely updated.
+  // shared position objects being unsafely writed.
   function rebaseHistArray(array, from, to, diff) {
     for (var i = 0; i < array.length; ++i) {
       var sub = array[i], ok = true;

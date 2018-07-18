@@ -35,7 +35,7 @@ public class ModelField implements Serializable {
     @Column(name = "CODE", length = 64)
     private String code;  //数据库字段
     @Column(name = "TYPE", length = 32)
-    private String  type; //字段类型
+    private String type; //字段类型
     @Column(name = "LENGTH")
     private int length; //字段长度
     @Column(name = "NULLABLE")
@@ -44,12 +44,12 @@ public class ModelField implements Serializable {
     private boolean isKey;   //是否主键
     @Column(name = "COMMENT", length = 255)
     private String comment; //注释
-    @Column(name = "INDEX")
+    @Column(name = "IDX")
     private boolean index;  //是否是索引
-    @Column(name = "INDEX_NAME", length = 64)
-    private String  indexName; //索引名称
-    @Column(name = "UNIQUE")
-    private boolean  uique; // 是否唯一
+    @Column(name = "IDX_NAME", length = 64)
+    private String indexName; //索引名称
+    @Column(name = "ISUNIQUE")
+    private boolean uique; // 是否唯一
     @Column(name = "IS_FOREIGN_KEY")
     private boolean isForeignKey;   //是否外键
     @Column(name = "REFERENCE_TABLE", length = 64)
@@ -60,4 +60,13 @@ public class ModelField implements Serializable {
     private String defaultValue; //字段默认值
     @Column(name = "SELECTABLE")
     private boolean selectable;  //是否可检索， 限制字段在页面是否可以展示----目前先放在这里，表示该字段是否的可以参与数据权限的使用
+
+    @Column(name = "CREATE_UID")
+    private String createUid;
+    @Column(name = "WRITE_UID")
+    private String writeUid;
+    @Column(name = "CREATE_DATE")
+    private String createDate;
+    @Column(name = "WRITE_DATE")
+    private String writeDate;
 }

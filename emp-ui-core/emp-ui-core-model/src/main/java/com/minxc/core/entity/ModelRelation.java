@@ -26,7 +26,7 @@ public class ModelRelation implements Serializable {
     private String id;
     private String model;
     private String module;
-    private String date_update;
+    private String date_write;
     private String date_init;
     private String create_uid;
     private String write_uid;

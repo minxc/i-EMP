@@ -1,12 +1,12 @@
 package com.minxc.core.entity;
 
+import com.google.common.collect.Sets;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
 
 /**********************************************************
  * 系统菜单
@@ -32,9 +32,28 @@ public class Menu implements Serializable {
     private String id;
     @Column(name = "MENU_NAME")
     private String name;
-    private Action action;
+
+    @ManyToOne
+    @JoinColumn(name = "PARENT_ID")
     private Menu parent;
 
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "PARENT_ID")
+    private Set<Menu> children = Sets.newHashSet();
 
+    @OneToOne
+    @JoinColumn(name = "VIEW_ID")
+    private View view;   //菜单所对应的视图
+
+    @Column(name = "ACTIVE")
+    private boolean active;
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    @Column(name = "WRITE_DATE")
+    private Date writeDate;
+    @Column(name="CREATE_UID")
+    private String createUid; //创建人
+    @Column(name="WRITE_UID")
+    private String writeUid; //上次更新人
 }

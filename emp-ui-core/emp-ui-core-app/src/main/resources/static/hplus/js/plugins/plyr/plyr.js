@@ -622,7 +622,7 @@
         player.container = container;
 
         // Captions functions
-        // Seek the manual caption time and update UI
+        // Seek the manual caption time and write UI
         function _seekManualCaptions(time) {
             // If it's not video, or we're using textTracks, bail.
             if (player.usingTextTracks || player.type !== 'video' || !player.supported.full) {
@@ -928,7 +928,7 @@
             _log('YouTube API Ready');
 
             // Setup timers object
-            // We have to poll YouTube for updates
+            // We have to poll YouTube for writes
             if (!('timer' in player)) {
                 player.timer = {};
             }
@@ -969,8 +969,8 @@
                         player.media.currentTime = instance.getCurrentTime();
                         player.media.muted = instance.isMuted();
 
-                        // Trigger timeupdate
-                        _triggerEvent(player.media, 'timeupdate');
+                        // Trigger timewrite
+                        _triggerEvent(player.media, 'timewrite');
 
                         // Reset timer
                         window.clearInterval(player.timer.buffering);
@@ -1030,8 +1030,8 @@
                                 // Set the current time
                                 player.media.currentTime = instance.getCurrentTime();
 
-                                // Trigger timeupdate
-                                _triggerEvent(player.media, 'timeupdate');
+                                // Trigger timewrite
+                                _triggerEvent(player.media, 'timewrite');
                             }, 200);
 
                             break;
@@ -1298,8 +1298,8 @@
                     _pause();
                 }
 
-                // Trigger timeupdate
-                _triggerEvent(player.media, 'timeupdate');
+                // Trigger timewrite
+                _triggerEvent(player.media, 'timewrite');
             }
 
             // Logging
@@ -1428,7 +1428,7 @@
             if (player.type == 'youtube') {
                 player.embed.setVolume(player.media.volume * 100);
 
-                // Trigger timeupdate
+                // Trigger timewrite
                 _triggerEvent(player.media, 'volumechange');
             }
 
@@ -1455,13 +1455,13 @@
             if (player.type === 'youtube') {
                 player.embed[player.media.muted ? 'mute' : 'unMute']();
 
-                // Trigger timeupdate
+                // Trigger timewrite
                 _triggerEvent(player.media, 'volumechange');
             }
         }
 
         // Update volume UI and storage
-        function _updateVolume() {
+        function _writeVolume() {
             // Get the current volume
             var volume = player.media.muted ? 0 : (player.media.volume * 10);
 
@@ -1517,7 +1517,7 @@
         }
 
         // Update <progress> elements
-        function _updateProgress(event) {
+        function _writeProgress(event) {
             var progress = player.progress.played.bar,
                 text = player.progress.played.text,
                 value = 0;
@@ -1525,12 +1525,12 @@
             if (event) {
                 switch (event.type) {
                     // Video playing
-                case 'timeupdate':
+                case 'timewrite':
                 case 'seeking':
                     value = _getPercentage(player.media.currentTime, player.media.duration);
 
                     // Set seek range value only if it's a 'natural' time event
-                    if (event.type == 'timeupdate' && player.buttons.seek) {
+                    if (event.type == 'timewrite' && player.buttons.seek) {
                         player.buttons.seek.value = value;
                     }
 
@@ -1575,7 +1575,7 @@
         }
 
         // Update the displayed time
-        function _updateTimeDisplay(time, element) {
+        function _writeTimeDisplay(time, element) {
             // Bail if there's no duration display
             if (!element) {
                 return;
@@ -1602,22 +1602,22 @@
 
             // If there's only one time display, display duration there
             if (!player.duration && config.displayDuration && player.media.paused) {
-                _updateTimeDisplay(duration, player.currentTime);
+                _writeTimeDisplay(duration, player.currentTime);
             }
 
-            // If there's a duration element, update content
+            // If there's a duration element, write content
             if (player.duration) {
-                _updateTimeDisplay(duration, player.duration);
+                _writeTimeDisplay(duration, player.duration);
             }
         }
 
         // Handle time change event
         function _timeUpdate(event) {
             // Duration
-            _updateTimeDisplay(player.media.currentTime, player.currentTime);
+            _writeTimeDisplay(player.media.currentTime, player.currentTime);
 
             // Playing progress
-            _updateProgress(event);
+            _writeProgress(event);
         }
 
         // Remove <source> children and src attribute
@@ -1711,7 +1711,7 @@
         }
 
         // Update poster
-        function _updatePoster(source) {
+        function _writePoster(source) {
             if (player.type === 'video') {
                 player.media.setAttribute('poster', source);
             }
@@ -1796,10 +1796,10 @@
             }
 
             // Time change on media
-            _on(player.media, 'timeupdate seeking', _timeUpdate);
+            _on(player.media, 'timewrite seeking', _timeUpdate);
 
             // Update manual captions
-            _on(player.media, 'timeupdate', _seekManualCaptions);
+            _on(player.media, 'timewrite', _seekManualCaptions);
 
             // Display duration
             _on(player.media, 'loadedmetadata', _displayDuration);
@@ -1819,10 +1819,10 @@
             });
 
             // Check for buffer progress
-            _on(player.media, 'progress playing', _updateProgress);
+            _on(player.media, 'progress playing', _writeProgress);
 
             // Handle native mute
-            _on(player.media, 'volumechange', _updateVolume);
+            _on(player.media, 'volumechange', _writeVolume);
 
             // Handle native play/pause
             _on(player.media, 'play pause', _checkPlaying);
@@ -1966,7 +1966,7 @@
 
             // Set volume
             _setVolume();
-            _updateVolume();
+            _writeVolume();
 
             // Setup fullscreen
             _setupFullscreen();
@@ -1992,7 +1992,7 @@
             forward: _forward,
             seek: _seek,
             source: _parseSource,
-            poster: _updatePoster,
+            poster: _writePoster,
             setVolume: _setVolume,
             togglePlay: _togglePlay,
             toggleMute: _toggleMute,

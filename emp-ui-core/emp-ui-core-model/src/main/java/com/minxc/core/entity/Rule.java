@@ -38,8 +38,8 @@ public class Rule implements Serializable {
     private Date writeDate;
     @Column(name="CREATE_UID")
     private String createUid; //创建人
-    @Column(name="UPDATE_UID")
-    private String updateUid; //上次更新人
+    @Column(name="WRITE_UID")
+    private String writeUid; //上次更新人
 
 
 

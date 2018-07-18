@@ -49,14 +49,14 @@ public class User implements Serializable {
     @Column(name = "ORG_ID")
     private Organization orgOid;
 
-    @Column(name = "CREATE_AT")
+    @Column(name = "CREATE_DATE")
     private Date createDate;
-    @Column(name = "UPDATE_AT")
-    private Date updateDate;
+    @Column(name = "WRITE_DATE")
+    private Date writeDate;
     @Column(name="CREATE_UID")
     private String createUid; //创建人
-    @Column(name="UPDATE_UID")
-    private String updateUid; //上次更新人
+    @Column(name="WRITE_UID")
+    private String writeUid; //上次更新人
     @Column(name="IS_EMPLOYEE")
     private boolean isEmployee;
 

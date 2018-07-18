@@ -655,7 +655,7 @@
       this.options.parent.append(this.el);
     }
 
-    Hover.prototype.update = function(html, x, y) {
+    Hover.prototype.write = function(html, x, y) {
       this.html;
       this.show();
       return this.moveTo(x, y);
@@ -819,7 +819,7 @@
     Line.prototype.displayHoverForRow = function(index) {
       var _ref;
       if (index != null) {
-        (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
+        (_ref = this.hover).write.apply(_ref, this.hoverContentForRow(index));
         return this.hilight(index);
       } else {
         this.hover.hide();
@@ -1419,7 +1419,7 @@
       var _ref;
       this.calcBars();
       if (this.options.hideHover === false) {
-        return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(this.data.length - 1));
+        return (_ref = this.hover).write.apply(_ref, this.hoverContentForRow(this.data.length - 1));
       }
     };
 
@@ -1571,7 +1571,7 @@
     Bar.prototype.onHoverMove = function(x, y) {
       var index, _ref;
       index = this.hitTest(x);
-      return (_ref = this.hover).update.apply(_ref, this.hoverContentForRow(index));
+      return (_ref = this.hover).write.apply(_ref, this.hoverContentForRow(index));
     };
 
     Bar.prototype.onHoverOut = function() {

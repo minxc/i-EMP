@@ -2,9 +2,7 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**********************************************************
@@ -14,7 +12,7 @@ import java.io.Serializable;
  *
  *********************************************************/
 @Entity
-@Table(name="MR_PERMISSION")
+@Table(name = "MR_PERMISSION", indexes = {@Index(name = "IDX_MR_PERMISSION_CODE", columnList = "CODE")})
 @Setter
 @Getter
 @NoArgsConstructor
@@ -26,10 +24,20 @@ public class Permission implements Serializable {
 
     @Id
     private String id; //主键
+    @Column(name = "NAME", length = 128)
     private String name; //组织机构名称
+    @Column(name = "CODE", length = 64)
     private String code; //组织结构编码
-    private Integer level; //组织结构层级
-    private String path; //组织结构路径
+    @Column(name = "NOTES")
     private String note; //组织结构备注
+
+    @Column(name = "CREATE_UID")
+    private String createUid;
+    @Column(name = "WRITE_UID")
+    private String writeUid;
+    @Column(name = "CREATE_DATE")
+    private String createDate;
+    @Column(name = "WRITE_DATE")
+    private String writeDate;
 
 }

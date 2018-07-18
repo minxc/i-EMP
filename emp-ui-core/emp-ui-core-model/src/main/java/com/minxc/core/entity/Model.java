@@ -36,12 +36,12 @@ public class Model implements Serializable {
     private Boolean isTransient;
     @Column(name="CREATE_UID")
     private String createUid;
-    @Column(name="UPDATE_UID")
-    private String updateUid;
+    @Column(name="WRITE_UID")
+    private String writeUid;
     @Column(name="CREATE_DATE")
     private String createDate;
-    @Column(name="UPDATE_DATE")
-    private String updateDate;
+    @Column(name="WRITE_DATE")
+    private String writeDate;
 
 
 }

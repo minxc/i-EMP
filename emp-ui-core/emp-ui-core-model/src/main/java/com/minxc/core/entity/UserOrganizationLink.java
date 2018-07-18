@@ -41,6 +41,6 @@ public class UserOrganizationLink implements Serializable {
     private String notes;
     @Column(name = "CRETAE_DATE")
     private Date createDate;
-    @Column(name = "UPDATE_DATE")
-    private Date updateDate;
+    @Column(name = "WRITE_DATE")
+    private Date writeDate;
 }

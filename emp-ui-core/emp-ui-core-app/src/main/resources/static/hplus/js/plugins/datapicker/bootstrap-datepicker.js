@@ -121,7 +121,7 @@
 							return parseInt(val) + 1;
 						});
 
-		this._allow_update = false;
+		this._allow_write = false;
 
 		this.setStartDate(this._o.startDate);
 		this.setEndDate(this._o.endDate);
@@ -130,9 +130,9 @@
 		this.fillDow();
 		this.fillMonths();
 
-		this._allow_update = true;
+		this._allow_write = true;
 
-		this.update();
+		this.write();
 		this.showMode();
 
 		if (this.isInline){
@@ -300,7 +300,7 @@
 						focus: $.proxy(this.show, this),
 						keyup: $.proxy(function(e){
 							if ($.inArray(e.keyCode, [27,37,39,38,40,32,13,9]) === -1)
-								this.update();
+								this.write();
 						}, this),
 						keydown: $.proxy(this.keydown, this)
 					}]
@@ -313,7 +313,7 @@
 						focus: $.proxy(this.show, this),
 						keyup: $.proxy(function(e){
 							if ($.inArray(e.keyCode, [27,37,39,38,40,32,13,9]) === -1)
-								this.update();
+								this.write();
 						}, this),
 						keydown: $.proxy(this.keydown, this)
 					}],
@@ -482,14 +482,14 @@
 
 		setDates: function(){
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
-			this.update.apply(this, args);
+			this.write.apply(this, args);
 			this._trigger('changeDate');
 			this.setValue();
 		},
 
 		setUTCDates: function(){
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
-			this.update.apply(this, $.map(args, this._utc_to_local));
+			this.write.apply(this, $.map(args, this._utc_to_local));
 			this._trigger('changeDate');
 			this.setValue();
 		},
@@ -521,20 +521,20 @@
 
 		setStartDate: function(startDate){
 			this._process_options({startDate: startDate});
-			this.update();
-			this.updateNavArrows();
+			this.write();
+			this.writeNavArrows();
 		},
 
 		setEndDate: function(endDate){
 			this._process_options({endDate: endDate});
-			this.update();
-			this.updateNavArrows();
+			this.write();
+			this.writeNavArrows();
 		},
 
 		setDaysOfWeekDisabled: function(daysOfWeekDisabled){
 			this._process_options({daysOfWeekDisabled: daysOfWeekDisabled});
-			this.update();
-			this.updateNavArrows();
+			this.write();
+			this.writeNavArrows();
 		},
 
 		place: function(){
@@ -602,9 +602,9 @@
 			});
 		},
 
-		_allow_update: true,
-		update: function(){
-			if (!this._allow_update)
+		_allow_write: true,
+		write: function(){
+			if (!this._allow_write)
 				return;
 
 			var oldDates = this.dates.copy(),
@@ -753,7 +753,7 @@
 			this.picker.find('tfoot th.clear')
 						.text(cleartxt)
 						.toggle(this.o.clearBtn !== false);
-			this.updateNavArrows();
+			this.writeNavArrows();
 			this.fillMonths();
 			var prevMonth = UTCDate(year, month-1, 28),
 				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
@@ -860,8 +860,8 @@
 			yearCont.html(html);
 		},
 
-		updateNavArrows: function(){
-			if (!this._allow_update)
+		writeNavArrows: function(){
+			if (!this._allow_write)
 				return;
 
 			var d = new Date(this.viewDate),
@@ -944,7 +944,7 @@
 									element = this.element.find('input');
 								if (element)
 									element.val("").change();
-								this.update();
+								this.write();
 								this._trigger('changeDate');
 								if (this.o.autoclose)
 									this.hide();
@@ -1238,7 +1238,7 @@
 				.hide()
 				.filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName)
 					.css('display', 'block');
-			this.updateNavArrows();
+			this.writeNavArrows();
 		}
 	};
 
@@ -1256,16 +1256,16 @@
 		this.pickers = $.map(this.inputs, function(i){
 			return $(i).data('datepicker');
 		});
-		this.updateDates();
+		this.writeDates();
 	};
 	DateRangePicker.prototype = {
-		updateDates: function(){
+		writeDates: function(){
 			this.dates = $.map(this.pickers, function(i){
 				return i.getUTCDate();
 			});
-			this.updateRanges();
+			this.writeRanges();
 		},
-		updateRanges: function(){
+		writeRanges: function(){
 			var range = $.map(this.dates, function(d){
 				return d.valueOf();
 			});
@@ -1305,7 +1305,7 @@
 					this.pickers[i++].setUTCDate(new_date);
 				}
 			}
-			this.updateDates();
+			this.writeDates();
 
 			delete this.updating;
 		},

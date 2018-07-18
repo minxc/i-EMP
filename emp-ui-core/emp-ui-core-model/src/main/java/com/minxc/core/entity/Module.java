@@ -31,15 +31,15 @@ public class Module implements Serializable {
     @Column(name = "CREATE_AT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
-    @Column(name = "UPDATE_AT")
+    @Column(name = "WRITE_AT")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updateAt;
+    private Date writeAt;
     @OneToOne
     @JoinColumn(name = "CREATE_BY")
     private User createBy;
     @OneToOne
-    @JoinColumn(name = "UPDATE_BY")
-    private User updateBy;
+    @JoinColumn(name = "WRITE_BY")
+    private User writeBy;
     @Column(name = "ACTIVE")
     private boolean active;
     @Column(name = "NOTE", length = 255)

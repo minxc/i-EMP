@@ -299,11 +299,11 @@
             // initial draw
             this.renderer.draw(currentValue);
 
-            // initial update
+            // initial write
             if (el.dataset && el.dataset.percent) {
-                this.update(parseFloat(el.dataset.percent));
+                this.write(parseFloat(el.dataset.percent));
             } else if (el.getAttribute && el.getAttribute('data-percent')) {
-                this.update(parseFloat(el.getAttribute('data-percent')));
+                this.write(parseFloat(el.getAttribute('data-percent')));
             }
         }.bind(this);
 
@@ -312,7 +312,7 @@
          * @param  {number} newValue Number between 0 and 100
          * @return {object}          Instance of the plugin for method chaining
          */
-        this.update = function(newValue) {
+        this.write = function(newValue) {
             newValue = parseFloat(newValue);
             if (options.animate.enabled) {
                 this.renderer.animate(currentValue, newValue);

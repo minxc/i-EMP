@@ -458,7 +458,7 @@
                         if ((_ref = file.previewElement) != null) {
                             _ref.parentNode.removeChild(file.previewElement);
                         }
-                        return this._updateMaxFilesReachedClass();
+                        return this._writeMaxFilesReachedClass();
                     },
                     thumbnail: function(file, dataUrl) {
                         var thumbnailElement, _i, _len, _ref, _results;
@@ -709,12 +709,12 @@
                     }
                     this.on("uploadprogress", (function(_this) {
                         return function() {
-                            return _this.updateTotalUploadProgress();
+                            return _this.writeTotalUploadProgress();
                         };
                     })(this));
                     this.on("removedfile", (function(_this) {
                         return function() {
-                            return _this.updateTotalUploadProgress();
+                            return _this.writeTotalUploadProgress();
                         };
                     })(this));
                     this.on("canceled", (function(_this) {
@@ -814,7 +814,7 @@
                     return Dropzone.instances.splice(Dropzone.instances.indexOf(this), 1);
                 };
 
-                Dropzone.prototype.updateTotalUploadProgress = function() {
+                Dropzone.prototype.writeTotalUploadProgress = function() {
                     var activeFiles, file, totalBytes, totalBytesSent, totalUploadProgress, _i, _len, _ref;
                     totalBytesSent = 0;
                     totalBytes = 0;
@@ -957,7 +957,7 @@
                     return "<strong>" + (Math.round(size) / 10) + "</strong> " + string;
                 };
 
-                Dropzone.prototype._updateMaxFilesReachedClass = function() {
+                Dropzone.prototype._writeMaxFilesReachedClass = function() {
                     if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
                         if (this.getAcceptedFiles().length === this.options.maxFiles) {
                             this.emit('maxfilesreached', this.files);
@@ -1094,7 +1094,7 @@
                                     _this.enqueueFile(file);
                                 }
                             }
-                            return _this._updateMaxFilesReachedClass();
+                            return _this._writeMaxFilesReachedClass();
                         };
                     })(this));
                 };
@@ -1304,7 +1304,7 @@
                 };
 
                 Dropzone.prototype.uploadFiles = function(files) {
-                    var file, formData, handleError, headerName, headerValue, headers, input, inputName, inputType, key, option, progressObj, response, updateProgress, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref, _ref1, _ref2, _ref3, _ref4;
+                    var file, formData, handleError, headerName, headerValue, headers, input, inputName, inputType, key, option, progressObj, response, writeProgress, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref, _ref1, _ref2, _ref3, _ref4;
                     xhr = new XMLHttpRequest();
                     for (_i = 0, _len = files.length; _i < _len; _i++) {
                         file = files[_i];
@@ -1324,7 +1324,7 @@
                             return _results;
                         };
                     })(this);
-                    updateProgress = (function(_this) {
+                    writeProgress = (function(_this) {
                         return function(e) {
                             var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
                             if (e != null) {
@@ -1378,7 +1378,7 @@
                                     response = "Invalid JSON response from server.";
                                 }
                             }
-                            updateProgress();
+                            writeProgress();
                             if (!((200 <= (_ref = xhr.status) && _ref < 300))) {
                                 return handleError();
                             } else {
@@ -1395,7 +1395,7 @@
                         };
                     })(this);
                     progressObj = (_ref = xhr.upload) != null ? _ref : xhr;
-                    progressObj.onprogress = updateProgress;
+                    progressObj.onprogress = writeProgress;
                     headers = {
                         "Accept": "application/json",
                         "Cache-Control": "no-cache",

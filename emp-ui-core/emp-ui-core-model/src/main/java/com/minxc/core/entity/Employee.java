@@ -30,4 +30,14 @@ public class Employee implements Serializable {
     private String name;
     @Column(name="BIRTHDAY")
     private Date birthday;
+
+
+    @Column(name = "CREATE_UID")
+    private String createUid;
+    @Column(name = "WRITE_UID")
+    private String writeUid;
+    @Column(name = "CREATE_DATE")
+    private String createDate;
+    @Column(name = "WRITE_DATE")
+    private String writeDate;
 }

@@ -265,7 +265,7 @@
             return this.outerHTML(group_el);
         };
 
-        AbstractChosen.prototype.results_update_field = function() {
+        AbstractChosen.prototype.results_write_field = function() {
             this.set_default_text();
             if (!this.is_multiple) {
                 this.results_reset_cleanup();
@@ -357,10 +357,10 @@
             }
             this.result_clear_highlight();
             if (results < 1 && searchText.length) {
-                this.update_results_content("");
+                this.write_results_content("");
                 return this.no_results(searchText);
             } else {
-                this.update_results_content(this.results_option_build());
+                this.write_results_content(this.results_option_build());
                 return this.winnow_results_set_highlight();
             }
         };
@@ -634,8 +634,8 @@
             this.search_results.bind('touchend.chosen', function(evt) {
                 _this.search_results_touchend(evt);
             });
-            this.form_field_jq.bind("chosen:updated.chosen", function(evt) {
-                _this.results_update_field(evt);
+            this.form_field_jq.bind("chosen:writed.chosen", function(evt) {
+                _this.results_write_field(evt);
             });
             this.form_field_jq.bind("chosen:activate.chosen", function(evt) {
                 _this.activate_field(evt);
@@ -793,7 +793,7 @@
                     this.container.removeClass("chosen-container-single-nosearch");
                 }
             }
-            this.update_results_content(this.results_option_build({
+            this.write_results_content(this.results_option_build({
                 first: true
             }));
             this.search_field_disabled();
@@ -845,7 +845,7 @@
             });
         };
 
-        Chosen.prototype.update_results_content = function(content) {
+        Chosen.prototype.write_results_content = function(content) {
             return this.search_results.html(content);
         };
 

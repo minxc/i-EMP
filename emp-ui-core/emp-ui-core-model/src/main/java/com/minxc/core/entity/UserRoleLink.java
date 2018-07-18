@@ -35,6 +35,6 @@ public class UserRoleLink implements Serializable {
     private boolean active;
     private String  createBy;
     private String createAt;
-    private String updateBy;
-    private String updateAt;
+    private String writeBy;
+    private String writeAt;
 }

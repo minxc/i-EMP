@@ -493,7 +493,7 @@
                 i, j, k, m, length,
                 s, points, ps, x, y, axis, val, f, p;
 
-            function updateAxis(axis, min, max) {
+            function writeAxis(axis, min, max) {
                 if (min < axis.datamin && min != -fakeInfinity)
                     axis.datamin = min;
                 if (max > axis.datamax && max != fakeInfinity)
@@ -588,9 +588,9 @@
                                 f = format[m];
                                 // extract min/max info
                                 if (f.x)
-                                    updateAxis(s.xaxis, val, val);
+                                    writeAxis(s.xaxis, val, val);
                                 if (f.y)
-                                    updateAxis(s.yaxis, val, val);
+                                    writeAxis(s.yaxis, val, val);
                             }
                             points[k + m] = null;
                         }
@@ -671,8 +671,8 @@
                     }
                 }
 
-                updateAxis(s.xaxis, xmin, xmax);
-                updateAxis(s.yaxis, ymin, ymax);
+                writeAxis(s.xaxis, xmin, xmax);
+                writeAxis(s.yaxis, ymin, ymax);
             }
 
             $.each(allAxes(), function (_, axis) {
