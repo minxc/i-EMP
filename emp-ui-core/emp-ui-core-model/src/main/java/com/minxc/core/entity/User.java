@@ -62,4 +62,8 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private Set<UserRoleLink> roles = Sets.newHashSet();
+    
+    
+    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
+    private Set<UserOrganizationLink> orgs = Sets.newHashSet();
 }
