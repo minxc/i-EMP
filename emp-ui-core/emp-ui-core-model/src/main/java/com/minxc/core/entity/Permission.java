@@ -24,9 +24,9 @@ public class Permission implements Serializable {
 
     @Id
     private String id; //主键
-    @Column(name = "NAME", length = 128)
+    @Column(name = "PERM_NAME", length = 128)
     private String name; //组织机构名称
-    @Column(name = "CODE", length = 64)
+    @Column(name = "PERM_NAMECODE", length = 64)
     private String code; //组织结构编码
     @Column(name = "NOTES")
     private String note; //组织结构备注
