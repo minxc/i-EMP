@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-@Order(-1)   // 确保数据源的切换在Transactional之前
+@Order(-1000)   // 确保数据源的切换在Transactional之前
 public class DynamicDataSourceAspect {
 
 
