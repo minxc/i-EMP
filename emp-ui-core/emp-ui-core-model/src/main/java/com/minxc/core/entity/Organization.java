@@ -53,24 +53,23 @@ public class Organization implements Serializable {
     @JoinColumn(name = "PARENT_OID",foreignKey = @ForeignKey(name="FK_ORG_PARENT_ID"))
     private Set<Organization> children = new HashSet<Organization>();
 
-
     @Column(name = "ORG_SEQ")
     private int sequence; //顺序
-    @Column(name = "ORG_CREATE_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
-    @Column(name = "ORG_WRITE_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date writeDate;
-
-    @Column(name = "ORG_CREATE_UID", length = 32)
-    private String createUid; //创建人
-
-    @Column(name = "ORG_WRITE_UID", length = 32)
-    private String writeUid; //上次更新人
 
     @Column(name = "ORG_ACTIVE")
     private boolean active;
+    @Column(name = "CREATE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Column(name = "WRITE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date writeDate;
+
+    @Column(name = "CREATE_UID", length = 32)
+    private String createUid; //创建人
+
+    @Column(name = "WRITE_UID", length = 32)
+    private String writeUid; //上次更新人
 
     @Column(name = "ORG_NOTES", length = 256)
     private String note; //组织结构备注

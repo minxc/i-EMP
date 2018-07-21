@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/graduation_project?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: ivan
+    openMulti: true
+    type: com.zaxxer.hikari.HikariDataSource
+    idle-timeout: 30000
+    multi:
+    - key: ds1
+      password: 123456
+      url: jdbc:mysql://127.0.0.1:3306/graduation_project?useUnicode=true&characterEncoding=UTF-8
+      idle-timeout: 20000
+      driver-class-name: com.mysql.jdbc.Driver
+      username: ivan
+      type: com.alibaba.druid.pool.DruidDataSource
+    - key: ds2
+      password: ******
+      url: jdbc:mysql://******/graduation_project?useUnicode=true&characterEncoding=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: ivan
+
+
+
