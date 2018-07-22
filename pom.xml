@@ -12,6 +12,7 @@
         <module>emp-ui-core</module>
         <module>emp-common</module>
         <module>emp-workflow</module>
+        <module>emp-datasource</module>
     </modules>
     <packaging>pom</packaging>
 
