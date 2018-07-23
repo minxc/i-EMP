@@ -15,17 +15,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@JdbcTest
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+//@JdbcTest
+//@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class DemoApplicationTests {
 
+    @Resource
+    private DataSource dataSource;
 
     @Test
     public void contextLoads() {
-       System.out.print("Hello...");
+       System.err.print("Hello...闵现畅。。。");
+       System.out.println(dataSource.toString());
     }
 
 }

@@ -1,5 +1,7 @@
 package com.minxc.datasource;
 
+import com.google.common.collect.Maps;
+import com.sun.javafx.collections.MappingChange;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
@@ -12,16 +14,17 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
+import sun.security.ssl.HandshakeInStream;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * @ClassName MultiDataSourceRegister
  * @Description TODO
@@ -31,9 +34,19 @@ import java.util.Map;
  **/
 @Slf4j
 @Configuration
-public class DynamicDataSourceRegister implements EnvironmentAware, ImportBeanDefinitionRegistrar {
+public class DynamicDataSourceRegister implements EnvironmentAware {
+
+
+    private static final Object DATASOURCE_TYPE_DEFAULT = "com.zaxxer.hikari.HikariDataSource"; //系统默认支持的数据库连接池
+
+
+    private static final String DEFAULT_DATASOURCE_TYPE_NAME = "hikari";
+    // 数据源
+    private DataSource defaultDataSource;
+    private Map<String, DataSource> secondaryDataSource = Maps.newHashMap();
 
     private final static ConfigurationPropertyNameAliases aliases = new ConfigurationPropertyNameAliases(); //别名
+
 
     static {
         //由于部分数据源配置不同，所以在此处添加别名，避免切换数据源出现某些参数无法注入的情况
@@ -53,35 +66,17 @@ public class DynamicDataSourceRegister implements EnvironmentAware, ImportBeanDe
      * @param annotationMetadata
      * @param beanDefinitionRegistry
      */
-    @Override
-    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
-        Map config, properties, defaultConfig = binder.bind("spring.datasource", Map.class).get(); //获取所有数据源配置
-        sourceMap = new HashMap<>(); //默认配置
-        properties = defaultConfig;
-        String typeStr = evn.getProperty("spring.datasource.type"); //默认数据源类型
-        Class<? extends DataSource> clazz = getDataSourceType(typeStr); //获取数据源类型
-        DataSource consumerDatasource, defaultDatasource = bind(clazz, properties); //绑定默认数据源参数
-        List<Map> configs = binder.bind("spring.datasource.multi", Bindable.listOf(Map.class)).get(); //获取其他数据源配置
-        for (int i = 0; i < configs.size(); i++) { //遍历生成其他数据源
-            config = configs.get(i);
-            clazz = getDataSourceType((String) config.get("type"));
-            if ((boolean) config.getOrDefault("extend", Boolean.TRUE)) { //获取extend字段，未定义或为true则为继承状态
-                properties = new HashMap(defaultConfig); //继承默认数据源配置
-                properties.putAll(config); //添加数据源参数
-            } else {
-                properties = config; //不继承默认配置
-            }
-            consumerDatasource = bind(clazz, properties); //绑定参数
-            sourceMap.put(config.get("key").toString(), consumerDatasource); //获取数据源的key，以便通过该key可以定位到数据源
-        }
-        GenericBeanDefinition define = new GenericBeanDefinition(); //bean定义类
-        define.setBeanClass(DynamicDataSource.class); //设置bean的类型，此处MultiDataSource是继承AbstractRoutingDataSource的实现类
-        MutablePropertyValues mpv = define.getPropertyValues(); //需要注入的参数，类似spring配置文件中的<property/>
-        mpv.add("defaultTargetDataSource", defaultDatasource); //添加默认数据源，避免key不存在的情况没有数据源可用
-        mpv.add("targetDataSources", sourceMap); //添加其他数据源
-        beanDefinitionRegistry.registerBeanDefinition("dataSource", define); //将该bean注册为datasource，不使用springboot自动生成的datasource
-        log.info("Dynamic DataSource Registry");
-    }
+//    @Override
+//    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
+//        log.info("Dynamic DataSource Registry begin...");
+//        GenericBeanDefinition define = new GenericBeanDefinition(); //bean定义类
+//        define.setBeanClass(DynamicDataSource.class); //设置bean的类型，此处MultiDataSource是继承AbstractRoutingDataSource的实现类
+//        MutablePropertyValues mpv = define.getPropertyValues(); //需要注入的参数，类似spring配置文件中的<property/>
+//        mpv.add("defaultTargetDataSource", defaultDataSource); //添加默认数据源，避免key不存在的情况没有数据源可用
+//        mpv.add("targetDataSources", sourceMap); //添加其他数据源targetDataSources
+//        beanDefinitionRegistry.registerBeanDefinition("dataSource", define); //将该bean注册为datasource，不使用springboot自动生成的datasource
+//        log.info("Dynamic DataSource Registry end...");
+//    }
 
     /**
      * 通过字符串获取数据源class对象
@@ -102,6 +97,7 @@ public class DynamicDataSourceRegister implements EnvironmentAware, ImportBeanDe
             throw new IllegalArgumentException("can not resolve class with type: " + typeStr); //无法通过反射获取class对象的情况则抛出异常，该情况一般是写错了，所以此次抛出一个runtimeexception
         }
     }
+
 
     /**
      * 绑定参数，以下三个方法都是参考DataSourceBuilder的bind方法实现的，目的是尽量保证我们自己添加的数据源构造过程与springboot保持一致
@@ -133,8 +129,6 @@ public class DynamicDataSourceRegister implements EnvironmentAware, ImportBeanDe
     }
 
 
-
-
     /**
      * EnvironmentAware接口的实现方法，通过aware的方式注入，此处是environment对象
      *
@@ -142,7 +136,83 @@ public class DynamicDataSourceRegister implements EnvironmentAware, ImportBeanDe
      */
     @Override
     public void setEnvironment(Environment environment) {
-        this.evn = environment;
-        binder = Binder.get(evn); //绑定配置器
+        log.info("Initilize system datasources....");
+        this.binder = Binder.get(environment); //绑定的变量获取获取数据源所有配置信息
+        Map configs = binder.bind("spring.datasource", Map.class).get();
+        initDefaultDataSource(configs);
+        initSecondaryDataSources(configs);
+    }
+
+    /*
+     * @method
+     * @Description 获取系统默认数据源
+     * @Author Xianchang.min
+     * @Date 22:56 2018/7/23
+     * @Param
+     * @return
+     **/
+
+    private void initDefaultDataSource(Map configs){
+        DataSource ds = null;
+        Map defaultDsConfig = (Map)configs.get("default");  //默认数据源
+        Set<String> keys = defaultDsConfig.keySet();
+        if(keys.size() == 1){
+            String dsType = keys.toArray(new String[1])[0];
+
+            if(DEFAULT_DATASOURCE_TYPE_NAME.equals(dsType)){   //系统默认采用HirakiCP数据库连接池
+                Map<String, String> hirakiDsCongfig = (Map<String, String>)defaultDsConfig.get(dsType);
+                this.defaultDataSource =  this.bind(HikariDataSource.class, hirakiDsCongfig);
+            }
+        }
+    }
+
+
+    /*
+     * @method
+     * @Description 获取系统配置多个备选数据源
+     * @Author Xianchang.min
+     * @Date 22:56 2018/7/23
+     * @Param  
+     * @return 
+     **/
+
+    private void initSecondaryDataSources(Map configs){
+        String secondaryDsNames = configs.get("secondary").toString();
+        if(secondaryDsNames.contains(",")){   //备选数据源多余两个
+            String[] dsNames = secondaryDsNames.split(",");
+            for(String ds : dsNames){
+                Map  aDsConfig = (Map)configs.get(ds);
+                Set<String> keys = aDsConfig.keySet();
+                String aDsConfigType  = keys.toArray(new String[1])[0];
+                if(DEFAULT_DATASOURCE_TYPE_NAME.equals(aDsConfigType)){   //系统默认采用HirakiCP数据库连接池
+                    Map<String, String> hirakiDsCongfig = (Map<String, String>)aDsConfig.get(aDsConfigType);
+                    DataSource dataSource =  this.bind(HikariDataSource.class, hirakiDsCongfig);
+                    this.secondaryDataSource.put(ds, dataSource);
+                }
+            }
+        }
+    }
+
+
+    @Bean(name = "dataSource")
+    public DynamicDataSource dataSource() {
+        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+
+        // 默认数据源
+        dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);
+        DynamicDataSourceContextHolder.dataSourceIds.add("defaultDataSource");
+        // 配置多数据源
+        Map<Object, Object> dsMap = new HashMap(5);
+        dsMap.put("defaultDataSource", defaultDataSource);
+        dsMap.putAll(secondaryDataSource);
+
+        for (String key : secondaryDataSource.keySet()) {
+            DynamicDataSourceContextHolder.dataSourceIds.add(key);
+        }
+
+
+        dynamicDataSource.setTargetDataSources(dsMap);
+
+        return dynamicDataSource;
     }
 }
