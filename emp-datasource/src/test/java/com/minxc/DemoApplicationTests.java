@@ -25,7 +25,8 @@ public class DemoApplicationTests {
 
     @Resource
     private DataSource dataSource;
-
+    @Resource
+    private StudentService service;
     @Test
     public void contextLoads() {
        System.err.print("Hello...闵现畅。。。");
