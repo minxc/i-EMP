@@ -34,7 +34,7 @@ public class ModelField implements Serializable {
     private String name; //字段名称，为显示使用
     @Column(name = "CODE", length = 64)
     private String code;  //数据库字段
-    @Column(name = "TYPE", length = 32)
+    @Column(name = "TYPE", length = 64)
     private String type; //字段类型
     @Column(name = "LENGTH")
     private int length; //字段长度
@@ -60,13 +60,12 @@ public class ModelField implements Serializable {
     private String defaultValue; //字段默认值
     @Column(name = "SELECTABLE")
     private boolean selectable;  //是否可检索， 限制字段在页面是否可以展示----目前先放在这里，表示该字段是否的可以参与数据权限的使用
-
-    @Column(name = "CREATE_UID")
+    @Column(name = "CREATE_UID", length = 64)
     private String createUid;
-    @Column(name = "WRITE_UID")
+    @Column(name = "WRITE_UID", length = 64)
     private String writeUid;
-    @Column(name = "CREATE_DATE")
+    @Column(name = "CREATE_DATE", length = 64)
     private String createDate;
-    @Column(name = "WRITE_DATE")
+    @Column(name = "WRITE_DATE", length = 64)
     private String writeDate;
 }
