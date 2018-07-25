@@ -6,7 +6,7 @@ package com.minxc.core.entity;
 public enum UserType {
     SYSTEM("99"),  //系统用户
     NORMAL("00"),  //正式用户
-    OUTSOURCING("99"); //外协人员
+    OUTSOURCING("88"); //外协人员
 
     private final String code;
 
@@ -15,15 +15,20 @@ public enum UserType {
     }
 
     public static UserType fromCode(String code) {
-        if ( code == 'M' || code == 'm' ) {
-            return MALE;
+        if ( code.equals("99")) {
+            return SYSTEM;
         }
-        if ( code == 'F' || code == 'f' ) {
-            return FEMALE;
+        if ( code.equals("00")) {
+            return NORMAL;
         }
-        throw new UnsupportedOperationException(
-                "The code " + code + " is not supported!"
-        );
+        if ( code.equals("88")) {
+        	return OUTSOURCING;
+        }else {
+        	 throw new UnsupportedOperationException(
+                     "The code " + code + " is not supported!"
+             );
+        }
+       
     }
 
     public String getCode() {
