@@ -24,19 +24,19 @@ import java.util.Date;
 public class Module implements Serializable {
     private static final long serialVersionUID = 3698217265888327346L;
     @Id
-    @Column(name = "MODULE_ID")
+    @Column(name = "MODULE_ID", length = 64)
     private String id;
-    @Column(name = "NAME")
+    @Column(name = "NAME", length = 64)
     private String name;
-    @Column(name = "CREATE_AT")
+    @Column(name = "CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
-    @Column(name = "WRITE_AT")
+    private Date createDate;
+    @Column(name = "WRITE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date writeAt;
+    private Date writeDate;
     @OneToOne
     @JoinColumn(name = "CREATE_BY")
-    private User createBy;
+    private User createUid;
     @OneToOne
     @JoinColumn(name = "WRITE_BY")
     private User writeBy;
