@@ -9,10 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>emp-ui-core</module>
+        <module>emp-ui</module>
         <module>emp-common</module>
         <module>emp-workflow</module>
         <module>emp-datasource</module>
+        <module>emp-core</module>
     </modules>
     <packaging>pom</packaging>
 
