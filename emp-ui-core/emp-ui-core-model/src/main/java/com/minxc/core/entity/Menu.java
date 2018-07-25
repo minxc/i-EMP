@@ -30,6 +30,7 @@ public class Menu implements Serializable {
     @Id
     @Column(name="MENU_ID")
     private String id;
+    
     @Column(name = "MENU_NAME")
     private String name;
 
@@ -37,7 +38,7 @@ public class Menu implements Serializable {
     @JoinColumn(name = "PARENT_ID")
     private Menu parent;
 
-
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PARENT_ID")
     private Set<Menu> children = Sets.newHashSet();
@@ -49,8 +50,10 @@ public class Menu implements Serializable {
     @Column(name = "ACTIVE")
     private boolean active;
     @Column(name = "CREATE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
     @Column(name = "WRITE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date writeDate;
     @Column(name="CREATE_UID")
     private String createUid; //创建人
