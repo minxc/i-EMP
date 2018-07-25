@@ -36,9 +36,11 @@ public class Role implements Serializable {
     private String code; //组织结构编码
     @Column(name="NOTE", length = 256)
     private String note; //组织结构备注
-
+    
+    @Builder.Default
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-    private Set<UserRoleLink> user = Sets.newHashSet ( );
+    private Set<UserRoleLink> userRoleLinks = Sets.newHashSet ( );
+    
     @Column(name="CREATE_UID", length = 64)
     private String createUid;
     @Column(name="WRITE_UID", length = 64)
