@@ -25,8 +25,9 @@ public class Action implements Serializable {
     private static final long serialVersionUID = 6223171507632459830L;
 
     @Id
+    @Column(name = "ACTION_ID", length=64)
     private String id;
-    @Column(name = "ACTION_TYPE")
+    @Column(name = "ACTION_TYPE", length=32)
     private String type; //GET POST
 
     @Column(name = "ACTION_CODE")
@@ -38,19 +39,19 @@ public class Action implements Serializable {
     @Column(name = "ACTION_NOTES")
     private String notes;   //备注
 
-    @Column(name = "ACTION_URL")
+    @Column(name = "ACTION_URL", length=255)
     private String url; //请求的URL
 
     @Column(name = "ACTION_ACTIVE")
     private boolean active;   //是否启用
 
-    @Column(name = "ACTION_CREATE_UID")
+    @Column(name = "ACTION_CREATE_UID", length=64)
     private String createUid;
-    @Column(name = "ACTION_WRITE_UID")
+    @Column(name = "ACTION_WRITE_UID", length=64)
     private String writeUid;
-    @Column(name = "ACTION_CREATE_DATE")
+    @Column(name = "ACTION_CREATE_DATE", length=64)
     private String createDate;
-    @Column(name = "ACTION_WRITE_DATE")
+    @Column(name = "ACTION_WRITE_DATE", length=64)
     private String writeDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
