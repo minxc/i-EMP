@@ -1,12 +1,8 @@
 package com.minxc.datasource;
 
 import com.google.common.collect.Maps;
-import com.sun.javafx.collections.MappingChange;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
@@ -16,11 +12,8 @@ import org.springframework.boot.context.properties.source.MapConfigurationProper
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
-import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
-import sun.security.ssl.HandshakeInStream;
 
 import javax.sql.DataSource;
 import java.util.*;

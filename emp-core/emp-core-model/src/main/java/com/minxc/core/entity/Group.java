@@ -30,9 +30,8 @@ public class Group implements Serializable {
     private String name; //组织机构名称
     @Column(name = "GOURP_CODE", nullable = false)
     private String code; //组织结构编码
-    @Column(name = "NOTES", length = 128)
+    @Column(name = "NOTES", length = 255)
     private String notes; //备注
-
     @Column(name = "CREATE_UID")
     private String createUid;
     @Column(name = "WRITE_UID")

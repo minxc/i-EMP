@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  **/
 @Aspect
-@Order(-1)// 保证该AOP在@Transactional之前执行
+@Order(-1000)// 保证该AOP在@Transactional之前执行
 @Component
 public class DynamicDataSourceAspect {
     private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
