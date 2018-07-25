@@ -2,9 +2,12 @@ package com.minxc.core.entity;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -31,10 +34,16 @@ public class UserOrganizationLink implements Serializable {
 
     @Id
     private String id;
-    @Column(name="USERID", nullable = false)
-    private User userId;
-    @Column(name="ORGID", nullable = false)
-    private Organization orgId;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ORG_ID", nullable = false)
+    private Organization organization;
+    
+    
     @Column(name = "SEQ")
     private int sequence;
     @Column(name = "NOTES")
