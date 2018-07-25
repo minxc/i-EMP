@@ -60,10 +60,11 @@ public class User implements Serializable {
     @Column(name="IS_EMPLOYEE")
     private boolean isEmployee;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-    private Set<UserRoleLink> roles = Sets.newHashSet();
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserRoleLink> userRoleLinks = Sets.newHashSet ( );
     
-    
-    @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
-    private Set<UserOrganizationLink> orgs = Sets.newHashSet();
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserOrganizationLink> organizationLinks = Sets.newHashSet();
 }
