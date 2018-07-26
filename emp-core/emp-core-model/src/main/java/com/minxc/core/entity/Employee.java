@@ -31,7 +31,6 @@ public class Employee implements Serializable {
     @Column(name="BIRTHDAY")
     private Date birthday;
 
-
     @Column(name = "CREATE_UID")
     private String createUid;
     @Column(name = "WRITE_UID")

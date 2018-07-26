@@ -1,23 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:17:47 GMT -->
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
     <title>H+ 后台主题UI框架 - 个人资料</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
-    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
-    <link href="css/animate.min.css" rel="stylesheet">
-    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
-
+    <link rel="shortcut icon" th:href="@{favicon.ico}"> <link th:href="@{hplus/css/bootstrap.min14ed.css}" rel="stylesheet">
+    <link th:href="@{hplus/css/font-awesome.min93e3.css}" rel="stylesheet">
+    <link th:href="@{hplus/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{hplus/css/style.min862f.css}" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
@@ -34,7 +27,7 @@
                         </div>
                         <div class="ibox-content profile-content">
                             <h4><strong>Beaut-zihan</strong></h4>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <h5>
                                     关于我
                                 </h5>
@@ -95,7 +88,7 @@
 
                         <div>
                             <div class="feed-activity-list">
-
+                                <!--需要动态生成的地方--->
                                 <div class="feed-element">
                                     <a href="profile.html#" class="pull-left">
                                         <img alt="image" class="img-circle" src="img/a1.jpg">
@@ -191,15 +184,12 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="js/content.min.js?v=1.0.0"></script>
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
-    <script src="js/demo/peity-demo.min.js"></script>
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+
+    <script th:src="@{hplus/js/jquery.min.js}"></script>
+    <script th:src="@{hplus/js/bootstrap.min.js}"></script>
+    <script th:src="@{hplus/js/content.min.js}"></script>
+    <script th:src="@{hplus/js/plugins/peity/jquery.peity.min.js}"></script>
+    <script th:src="@{hplus/js/demo/peity-demo.min.js}"></script>
 
 </body>
-
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:21 GMT -->
 </html>

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 应用的入口层函数
  */
-@SpringBootApplication
-//public class EmpUIApplication  extends SpringBootServletInitializer{
+@SpringBootApplication(scanBasePackages = {"com.minxc.**.rest.*"})
+//public class EmpUIApplication  extends SpringBootServletInitializer{    war部署方式
 //    public static void main(String[] args) {
 //        SpringApplication.run(EmpUIApplication.class, args);
 //    }

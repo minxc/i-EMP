@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html>
-
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/contacts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:21 GMT -->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="utf-8">
@@ -10,14 +7,12 @@
 
 
     <title>H+ 后台主题UI框架 - 联系人</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
-    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{favicon.ico}"> <link th:href="@{hplus/css/bootstrap.min14ed.css}" rel="stylesheet">
+    <link th:href="@{hplus/css/font-awesome.min93e3.css}" rel="stylesheet">
 
-    <link href="css/animate.min.css" rel="stylesheet">
-    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link th:href="@{hplus/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{hplus/css/style.min862f.css}" rel="stylesheet">
 
 </head>
 
@@ -29,7 +24,7 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a2.jpg}">
                                 <div class="m-t-xs font-bold">CTO</div>
                             </div>
                         </div>
@@ -52,7 +47,7 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a1.jpg}">
                                 <div class="m-t-xs font-bold">营销总监</div>
                             </div>
                         </div>
@@ -81,7 +76,7 @@
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>Monica Smith</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -98,13 +93,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a4.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a4.jpg}">
                                 <div class="m-t-xs font-bold">攻城师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>Michael Zimber</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -127,7 +122,7 @@
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>作家崔成浩</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -150,7 +145,7 @@
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>韩寒</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -167,13 +162,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a1.jpg}">
                                 <div class="m-t-xs font-bold">CEO</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>郭敬明</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -190,13 +185,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a2.jpg}">
                                 <div class="m-t-xs font-bold">射鸡师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>马云</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -213,13 +208,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a3.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a3.jpg">
                                 <div class="m-t-xs font-bold">市场总监</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>范爷</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -236,13 +231,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a4.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a4.jpg}">
                                 <div class="m-t-xs font-bold">攻城师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>李彦宏</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -259,13 +254,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a5.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a5.jpg}">
                                 <div class="m-t-xs font-bold">射鸡师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>小马哥</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -282,13 +277,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a6.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a6.jpg}">
                                 <div class="m-t-xs font-bold">射鸡师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>乔峰</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -306,13 +301,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a1.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/img/a1.jpg}">
                                 <div class="m-t-xs font-bold">CEO</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>慕容晓晓</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -329,13 +324,13 @@
                     <a href="profile.html">
                         <div class="col-sm-4">
                             <div class="text-center">
-                                <img alt="image" class="img-circle m-t-xs img-responsive" src="img/a2.jpg">
+                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="@{hplus/a2.jpg}">
                                 <div class="m-t-xs font-bold">射鸡师</div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <h3><strong>高圆圆</strong></h3>
-                            <p><i class="fa fa-map-marker"></i> 上海市闵行区绿地科技岛广场A座2606室</p>
+                            <p><i class="fa fa-map-marker"></i> 南京市江宁区润湖大道1888号</p>
                             <address>
                             <strong>Baidu, Inc.</strong><br>
                             E-mail:xxx@baidu.com<br>
@@ -349,13 +344,12 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="js/content.min.js?v=1.0.0"></script>
+    <script th:src="@{hplus/js/jquery.min.js}"></script>
+    <script th:src="@{hplus/js/bootstrap.min.js}"></script>
+    <script th:src="@{hplus/js/content.min.js}"></script>
     <script>
         $(document).ready(function(){$(".contact-box").each(function(){animationHover(this,"pulse")})});
     </script>
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 </body>
 
 
