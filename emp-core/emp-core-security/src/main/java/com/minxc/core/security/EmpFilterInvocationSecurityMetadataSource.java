@@ -7,11 +7,12 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * @ClassName EmpFilterInvocationSecurityMetadataSource
- * @Description TODO
+ * @Description 系统安全数据访问类
  * @Author Xianchang.min
  * @Date 2018/7/29 13:03
  * @Version 1.0
@@ -22,6 +23,11 @@ import java.util.Map;
 public class EmpFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     private final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap;
+    
+    
+    public EmpFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap) {
+        this.requestMap = requestMap;
+    }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
@@ -29,6 +35,7 @@ public class EmpFilterInvocationSecurityMetadataSource implements FilterInvocati
     }
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
+    	log.info("EmpFilterInvocationSecurityMetadataSource....");
         return null;
     }
 
