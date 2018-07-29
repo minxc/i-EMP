@@ -17,6 +17,7 @@
         <module>emp-core-service</module>
         <module>emp-core-rest</module>
         <module>emp-core-repository</module>
+        <module>emp-core-security</module>
     </modules>
 
 </project>

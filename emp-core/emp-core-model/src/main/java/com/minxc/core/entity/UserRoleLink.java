@@ -36,7 +36,6 @@ public class UserRoleLink implements Serializable {
 	@JoinColumn(name = "ROLE_ID", nullable = false)
 	private Role role;
 	private boolean active;
-
 	@Column(name = "CREATE_DATE")
 	private Date createDate;
 	@Column(name = "WRITE_DATE")
@@ -45,4 +44,6 @@ public class UserRoleLink implements Serializable {
 	private String createUid; // 创建人
 	@Column(name = "WRITE_UID")
 	private String writeUid; // 上次更新人
+
+
 }

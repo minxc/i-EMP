@@ -25,6 +25,7 @@ import java.util.*;
  * @Date 2018/7/22 19:26
  * @Version 1.0
  **/
+
 @Slf4j
 @Configuration
 public class DynamicDataSourceRegister implements EnvironmentAware {
@@ -203,9 +204,7 @@ public class DynamicDataSourceRegister implements EnvironmentAware {
             DynamicDataSourceContextHolder.dataSourceIds.add(key);
         }
 
-
         dynamicDataSource.setTargetDataSources(dsMap);
-
         return dynamicDataSource;
     }
 }

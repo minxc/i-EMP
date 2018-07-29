@@ -46,8 +46,6 @@ public class User implements Serializable {
     private String  ip;   //登录常用地址
     @Column(name = "IP_BINDABLE")
     private boolean ipBindable; //是否登录地址绑定
-    @Column(name = "ORG_ID")
-    private Organization orgOid;
 
     @Column(name = "CREATE_DATE")
     private Date createDate;

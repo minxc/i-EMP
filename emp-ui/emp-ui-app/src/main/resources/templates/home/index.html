@@ -10,7 +10,7 @@
     <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
 
-    <link rel="shortcut icon" th:href="@{../favicon.ico}">
+    <link rel="shortcut icon" th:href="@{favicon.ico}">
     <link th:href="@{hplus/css/bootstrap.min14ed.css}" rel="stylesheet">
     <link th:href="@{css/font-awesome.min93e3.css}" rel="stylesheet">
     <link th:href="@{css/animate.min.css}" rel="stylesheet">
@@ -44,7 +44,7 @@
                                 <li><a class="J_menuItem" th:href="@{../mailbox.html}">信箱</a>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a th:href="@{../login.html}">安全退出</a>
+                                <li><a th:href="@{/}">安全退出</a>  <!--安全退出-->
                                 </li>
                             </ul>
                         </div>
@@ -334,7 +334,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="J_menuItem" th:href="@{../css_animation.html}"><i class="fa fa-magic"></i> <span class="nav-label">CSS动画</span></a>
+                        <a class="J_menuItem" th:href="@{hplus/css_animation.html}"><i class="fa fa-magic"></i> <span class="nav-label">CSS动画</span></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-cutlery"></i> <span class="nav-label">工具 </span><span class="fa arrow"></span></a>
@@ -343,7 +343,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </nav>
