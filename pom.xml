@@ -14,6 +14,7 @@
         <module>emp-workflow</module>
         <module>emp-datasource</module>
         <module>emp-core</module>
+        <module>emp-id-generator</module>
     </modules>
     <packaging>pom</packaging>
 

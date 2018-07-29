@@ -1,7 +1,6 @@
 package com.minxc.core.security;
 
 import com.minxc.core.entity.User;
-import com.minxc.core.entity.UserRoleLink;
 import com.minxc.core.repository.UserRepository;
 import com.minxc.core.security.utils.EmpSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Set;
 
 /**
  * @ClassName EmpUserDetailService

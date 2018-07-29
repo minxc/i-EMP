@@ -26,7 +26,7 @@ public class Module implements Serializable {
     @Id
     @Column(name = "MODULE_ID", length = 64)
     private String id;
-    @Column(name = "NAME", length = 64)
+    @Column(name = "MODULE_NAME", length = 64)
     private String name;
     @Column(name = "CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,11 +35,11 @@ public class Module implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date writeDate;
     @OneToOne
-    @JoinColumn(name = "CREATE_BY")
+    @JoinColumn(name = "CREATE_UID")
     private User createUid;
     @OneToOne
-    @JoinColumn(name = "WRITE_BY")
-    private User writeBy;
+    @JoinColumn(name = "WRITE_UID")
+    private User writeUid;
     @Column(name = "ACTIVE")
     private boolean active;
     @Column(name = "NOTE", length = 255)

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Date;
  *
  *********************************************************/
 @Entity
-@Table(name="MR_RULES")
+@Table(name="MR_RULE", indexes = {@Index(name = "IDX_MR_PERMISSION_VIEWID", columnList = "VIEW_ID"),@Index(name = "IDX_MR_PERMISSION_ACTIONID", columnList = "ACTION_ID")})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,6 +33,13 @@ public class Rule implements Serializable {
     private String id; //主键
     @Column(name="CONTENTS")
     private String contents;
+    
+    @Column(name = "VIEW_ID", length=64)
+    private String view;
+    @Column(name = "ACTION_ID", length=64)
+    private String action;
+    @Column(name = "ACTIVE") 
+    private boolean active;
     @Column(name = "CREATE_DATE")
     private Date createDate;
     @Column(name = "WRITE_DATE")

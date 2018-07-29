@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**********************************************************
- * $()
+ * 权限表，涉及ROLE,Action, Rule关系
  * @author Xcm   xianchangmin@126.com
  * @date 2018/5/31
  *
@@ -24,13 +24,16 @@ public class Permission implements Serializable {
 
     @Id
     private String id; //主键
-    @Column(name = "PERM_NAME", length = 128)
-    private String name; //组织机构名称
-    @Column(name = "PERM_NAMECODE", length = 64)
-    private String code; //组织结构编码
-    @Column(name = "NOTES")
-    private String note; //组织结构备注
-
+    @Column(name = "VIEW_ID", length=64)
+    private String view;   //所属视图
+    @Column(name = "ACTION_ID", length=64)
+    private String action; //操作
+    @Column(name = "RULE_ID", length=64) 
+    private String  rule;  //对应的数据权限
+    @Column(name = "PERM_TYPE", length=16) 
+    private String type;    // 权限的类型  00：功能权限  01：操作权限 02：数据权限
+    @Column(name = "ACTIVE") 
+    private boolean active;   //是否有效
     @Column(name = "CREATE_UID")
     private String createUid;
     @Column(name = "WRITE_UID")

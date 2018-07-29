@@ -25,6 +25,7 @@ import java.util.Date;
 public class Model implements Serializable {
 
 	private static final long serialVersionUID = 3765327366122953661L;
+	
 	@Id
 	@Column(name = "MODEL_ID", length = 64)
 	private String id;
