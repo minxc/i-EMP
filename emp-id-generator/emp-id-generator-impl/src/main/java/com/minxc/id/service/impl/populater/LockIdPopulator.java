@@ -21,7 +21,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.minxc.id.bean.Id;
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 import com.minxc.id.service.impl.timer.Timer;
 
 /**   
@@ -47,7 +47,7 @@ public class LockIdPopulator extends BasePopulator {
     }
 
     @Override
-    public void populateId(Timer timer, Id id, IdMeta idMeta) {
+    public void populateId(Timer timer, Id id, IdMetaData idMeta) {
         lock.lock();
         try {
             super.populateId(timer, id, idMeta);

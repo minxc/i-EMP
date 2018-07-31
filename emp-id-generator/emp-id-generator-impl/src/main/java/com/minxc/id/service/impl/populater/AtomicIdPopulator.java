@@ -20,7 +20,7 @@ package com.minxc.id.service.impl.populater;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.minxc.id.bean.Id;
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 import com.minxc.id.service.impl.timer.Timer;
 
 /**   
@@ -54,7 +54,7 @@ public class AtomicIdPopulator implements IdPopulator, ResetPopulator {
 
     
     @Override
-    public void populateId(Timer timer, Id id, IdMeta idMeta) {
+    public void populateId(Timer timer, Id id, IdMetaData idMeta) {
         Variant varOld, varNew;
         long timestamp, sequence;
 

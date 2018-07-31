@@ -13,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +36,7 @@ import java.util.List;
 
 @Configuration
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
+@EnableWebSecurity
 public class EmpWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -57,6 +59,7 @@ public class EmpWebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        auth.authenticationProvider() ;
 
     }
+    
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -70,16 +73,17 @@ public class EmpWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {//setting是自定义的配置参数
-        http.formLogin().loginPage("/login").permitAll().successHandler(loginSuccessHandler())　　//设定一个自定义的的登陆页面URL
+        http.formLogin().loginPage("/").permitAll()//.successHandler(loginSuccessHandler())　　//设定一个自定义的的登陆页面URL
                 .and().authorizeRequests()
-                .antMatchers("/images/**", "/checkcode", "/scripts/**", "/styles/**").permitAll()　　//完全允许访问的一些URL配置
-                .antMatchers(settings.getPermitall().split(",")).permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().requireCsrfProtectionMatcher(csrfSecurityRequestMatcher())　　//跨站请求伪造，这是一个防止跨站请求伪造攻击的策略配置
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                .and().logout().logoutSuccessUrl(settings.getLogoutsuccssurl())　　//设定登出成功的链接
-                .and().exceptionHandling().accessDeniedPage(settings.getDeniedpage())　　　//配置拒绝访问的提示链接
-                .and().rememberMe().tokenValiditySeconds(86400).tokenRepository(tokenRepository());  //用来记住用户的登录状态，用户没执行推出下次打开页面不用登陆，时效自己设置
+                .antMatchers("/images/**", "/checkcode", "/scripts/**", "/styles/**", "/hplus/**").permitAll()
+                ;//完全允许访问的一些URL配置
+//                .antMatchers(settings.getPermitall().split(",")).permitAll()
+//                .anyRequest().authenticated()
+//                .and().csrf().requireCsrfProtectionMatcher(csrfSecurityRequestMatcher())　　//跨站请求伪造，这是一个防止跨站请求伪造攻击的策略配置
+//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+//                .and().logout().logoutSuccessUrl(settings.getLogoutsuccssurl())　　//设定登出成功的链接
+//                .and().exceptionHandling().accessDeniedPage(settings.getDeniedpage())　　　//配置拒绝访问的提示链接
+//                .and().rememberMe().tokenValiditySeconds(86400).tokenRepository(tokenRepository());  //用来记住用户的登录状态，用户没执行推出下次打开页面不用登陆，时效自己设置
     }
 
 
@@ -90,32 +94,34 @@ public class EmpWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return jtr;
     }
 
-    @Bean
-    public LoginSuccessHandler loginSuccessHandler(){//设置登陆成功处理器
-        return new LoginSuccessHandler();
-    }
+//    @Bean
+//    public LoginSuccessHandler loginSuccessHandler(){//设置登陆成功处理器
+//        return new LoginSuccessHandler();
+//    }
 
-    @Bean
-    public FilterSecurityInterceptor customFilter() throws Exception{
-
-        FilterSecurityInterceptor  filterSecurityInterceptor = new FilterSecurityInterceptor();
-        filterSecurityInterceptor.set
-        EmpFilterSecurityInterceptor customFilter = new EmpFilterSecurityInterceptor();
-        customFilter.setSecurityMetadataSource(securityMetadataSource());
-        customFilter.setAccessDecisionManager(accessDecisionManager());
-        customFilter.setAuthenticationManager(authenticationManager);
-        return customFilter;
-    }
+//    @Bean
+//    public FilterSecurityInterceptor customFilter() throws Exception{
+//
+//        FilterSecurityInterceptor  filterSecurityInterceptor = new FilterSecurityInterceptor();
+//        filterSecurityInterceptor.set
+//        EmpFilterSecurityInterceptor customFilter = new EmpFilterSecurityInterceptor();
+//        customFilter.setSecurityMetadataSource(securityMetadataSource());
+//        customFilter.setAccessDecisionManager(accessDecisionManager());
+//        customFilter.setAuthenticationManager(authenticationManager);
+//        return customFilter;
+//    }
 
     @Bean
     public EmpAccessDecisionManager accessDecisionManager() {
         return new EmpAccessDecisionManager();
     }
 
-    @Bean
-    public EmpFilterInvocationSecurityMetadataSource securityMetadataSource() {
-        return new CustomSecurityMetadataSource(settings.getUrlroles());
-    }
+//    @Bean
+//    public EmpFilterInvocationSecurityMetadataSource securityMetadataSource() {
+//        
+//        EmpFilterInvocationSecurityMetadataSource securityMetaDataSource = new EmpFilterInvocationSecurityMetadataSource();
+//        return securityMetaDataSource;
+//    }
 
 
     private CSRFSecurityRequestMatcher csrfSecurityRequestMatcher(){ //加入需要排除阻止CSRF攻击的链表链接，链接地址中包含/rest字符串的，对其忽略CSRF保护策略

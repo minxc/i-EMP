@@ -17,8 +17,6 @@
 
 package com.minxc.id.service.impl.provider;
 
-
-
 /**   
 *    
 * 项目名称：emp-id-generator-impl   

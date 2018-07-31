@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import;
  **/
 @SpringBootApplication
 @Import({DynamicDataSourceRegister.class}) // 注册动态多数据源
-@ComponentScan(basePackages = {"com.minxc"})
 public class DynamicDataSourceApplication {
     public static void main(String[] args) {
         SpringApplication.run(DynamicDataSourceApplication.class, args);

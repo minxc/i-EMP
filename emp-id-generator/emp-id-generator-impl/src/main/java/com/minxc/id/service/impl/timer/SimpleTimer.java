@@ -2,7 +2,7 @@ package com.minxc.id.service.impl.timer;
 
 import java.util.Date;
 
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 import com.minxc.id.service.impl.bean.IdType;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SimpleTimer implements Timer {
 
-    protected IdMeta idMeta;
+    protected IdMetaData idMeta;
     protected IdType idType;
     protected long maxTime;
     protected long epoch = EPOCH;
 
-    public void init(IdMeta idMeta, IdType idType) {
+    public void init(IdMetaData idMeta, IdType idType) {
         this.idMeta = idMeta;
         this.maxTime = (1 << idMeta.getTimeBits()) - 1;
         this.idType = idType;

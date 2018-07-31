@@ -33,7 +33,7 @@ package com.minxc.id.service.impl.bean;
 *    
 */
 
-public class IdMeta {
+public class IdMetaData {
     private byte machineBits;
 
     private byte seqBits;
@@ -46,7 +46,7 @@ public class IdMeta {
 
     private byte versionBits;
 
-    public IdMeta(byte machineBits, byte seqBits, byte timeBits, byte genMethodBits, byte typeBits, byte versionBits) {
+    public IdMetaData(byte machineBits, byte seqBits, byte timeBits, byte genMethodBits, byte typeBits, byte versionBits) {
         super();
 
         this.machineBits = machineBits;

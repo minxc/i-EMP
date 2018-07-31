@@ -18,7 +18,7 @@
 package com.minxc.id.service.impl.converter;
 
 import com.minxc.id.bean.Id;
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 
 /**   
 *    
@@ -38,11 +38,11 @@ public class IdConverterImpl implements IdConverter {
     public IdConverterImpl() {
     }
 
-    public long convert(Id id, IdMeta idMeta) {
+    public long convert(Id id, IdMetaData idMeta) {
         return doConvert(id, idMeta);
     }
 
-    protected long doConvert(Id id, IdMeta idMeta) {
+    protected long doConvert(Id id, IdMetaData idMeta) {
         long ret = 0;
 
         ret |= id.getMachine();
@@ -60,11 +60,11 @@ public class IdConverterImpl implements IdConverter {
         return ret;
     }
 
-    public Id convert(long id, IdMeta idMeta) {
+    public Id convert(long id, IdMetaData idMeta) {
         return doConvert(id, idMeta);
     }
 
-    protected Id doConvert(long id, IdMeta idMeta) {
+    protected Id doConvert(long id, IdMetaData idMeta) {
         Id ret = new Id();
 
         ret.setMachine(id & idMeta.getMachineBitsMask());

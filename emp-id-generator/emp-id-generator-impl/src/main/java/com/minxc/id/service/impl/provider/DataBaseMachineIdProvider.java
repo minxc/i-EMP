@@ -17,6 +17,8 @@
 
 package com.minxc.id.service.impl.provider;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
 import com.minxc.id.util.IpAddressUtils;

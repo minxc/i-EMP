@@ -18,7 +18,7 @@
 package com.minxc.id.service.impl.converter;
 
 import com.minxc.id.bean.Id;
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 
 /**   
 *    
@@ -35,7 +35,7 @@ import com.minxc.id.service.impl.bean.IdMeta;
 */
 
 public interface IdConverter {
-    long convert(Id id, IdMeta idMeta);
+    long convert(Id id, IdMetaData idMeta);
 
-    Id convert(long id, IdMeta idMeta);
+    Id convert(long id, IdMetaData idMeta);
 }

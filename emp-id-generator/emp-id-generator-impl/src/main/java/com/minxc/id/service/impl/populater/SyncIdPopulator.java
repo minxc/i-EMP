@@ -18,7 +18,7 @@
 package com.minxc.id.service.impl.populater;
 
 import com.minxc.id.bean.Id;
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 import com.minxc.id.service.impl.timer.Timer;
 
 /**   
@@ -42,7 +42,7 @@ public class SyncIdPopulator extends BasePopulator {
     }
 
     @Override
-    public synchronized void populateId(Timer timer, Id id, IdMeta idMeta) {
+    public synchronized void populateId(Timer timer, Id id, IdMetaData idMeta) {
         super.populateId(timer, id, idMeta);
     }
 

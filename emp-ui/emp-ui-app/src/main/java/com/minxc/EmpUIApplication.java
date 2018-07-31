@@ -8,18 +8,17 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 /**
  * 应用的入口层函数
  */
-@SpringBootApplication(scanBasePackages = {"com.minxc.**.rest"})
+@SpringBootApplication
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-//public class EmpUIApplication  extends SpringBootServletInitializer{    war部署方式
-//    public static void main(String[] args) {
-//        SpringApplication.run(EmpUIApplication.class, args);
-//    }
-//}
-
-
 public class EmpUIApplication {
     public static void main(String[] args) {
         SpringApplication.run(EmpUIApplication.class, args);
     }
 }
 
+// 继承实现基于单独的WAR部署方式
+//public class EmpUIApplication  extends SpringBootServletInitializer{    war部署方式
+//public static void main(String[] args) {
+//  SpringApplication.run(EmpUIApplication.class, args);
+//}
+//}

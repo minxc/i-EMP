@@ -19,7 +19,7 @@ package com.minxc.id.service.impl.timer;
 
 import java.util.Date;
 
-import com.minxc.id.service.impl.bean.IdMeta;
+import com.minxc.id.service.impl.bean.IdMetaData;
 import com.minxc.id.service.impl.bean.IdType;
 
 /**   
@@ -41,7 +41,7 @@ public interface Timer {
     long EPOCH = 1420041600000L;
 
     
-    void init(IdMeta idMeta, IdType idType);
+    void init(IdMetaData idMeta, IdType idType);
 
     Date transTime(long time);
 

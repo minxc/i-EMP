@@ -21,8 +21,8 @@ import java.util.Date;
 
 import com.minxc.id.bean.Id;
 import com.minxc.id.itf.IdService;
-import com.minxc.id.service.impl.bean.IdMeta;
-import com.minxc.id.service.impl.bean.IdMetaFactory;
+import com.minxc.id.service.impl.bean.IdMetaData;
+import com.minxc.id.service.impl.bean.IdMetaDataFactory;
 import com.minxc.id.service.impl.bean.IdType;
 import com.minxc.id.service.impl.converter.IdConverter;
 import com.minxc.id.service.impl.converter.IdConverterImpl;
@@ -52,7 +52,7 @@ public abstract class AbstractIdServiceImpl implements IdService{
     protected long version = 0;
 
     protected IdType idType;
-    protected IdMeta idMeta;
+    protected IdMetaData idMeta;
 
     protected IdConverter idConverter;
 
@@ -78,7 +78,7 @@ public abstract class AbstractIdServiceImpl implements IdService{
 
     public void init() {
         if (this.idMeta == null) {
-            setIdMeta(IdMetaFactory.getIdMeta(idType));
+            setIdMeta(IdMetaDataFactory.getIdMeta(idType));
         }
         if (this.idConverter == null) {
             setIdConverter(new IdConverterImpl());
@@ -178,7 +178,7 @@ public abstract class AbstractIdServiceImpl implements IdService{
         this.idConverter = idConverter;
     }
 
-    public void setIdMeta(IdMeta idMeta) {
+    public void setIdMeta(IdMetaData idMeta) {
         this.idMeta = idMeta;
     }
 

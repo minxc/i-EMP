@@ -13,11 +13,12 @@
 
 * @version V1.0  
 
-*/ 
+*/
 
 package com.minxc.id.service.factory;
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.minxc.id.itf.IdService;
 import com.minxc.id.service.impl.IdServiceImpl;
@@ -29,26 +30,21 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-*    
-* 项目名称：emp-id-generator-impl   
-* 类名称：IdServiceFactoryBean   
-* 类描述：   
-* 创建人：Xianchang.min   
-* 创建时间：2018年7月29日 下午11:52:50   
-* 修改人：Xianchang.min   
-* 修改时间：2018年7月29日 下午11:52:50   
-* 修改备注：   
-* @version  1.0  
-*
+ * 
+ * 项目名称：emp-id-generator-impl 类名称：IdServiceFactoryBean 类描述： 创建人：Xianchang.min
+ * 创建时间：2018年7月29日 下午11:52:50 修改人：Xianchang.min 修改时间：2018年7月29日 下午11:52:50 修改备注：
+ * 
+ * @version 1.0
+ *
  */
 
 @Slf4j
-public class IdServiceFactoryBean implements FactoryBean<IdService>{
+public class IdServiceFactoryBean implements FactoryBean<IdService> {
 
     public enum Type {
         PROPERTY, IP_CONFIGURABLE, DB
     }
-    
+
     private Type providerType;
 
     private long machineId;
@@ -69,20 +65,19 @@ public class IdServiceFactoryBean implements FactoryBean<IdService>{
     public void init() {
         if (providerType == null) {
             log.error("The type of Id service is mandatory.");
-            throw new IllegalArgumentException(
-                    "The type of Id service is mandatory.");
+            throw new IllegalArgumentException("The type of Id service is mandatory.");
         }
 
         switch (providerType) {
-            case PROPERTY:
-                idService = constructPropertyIdService(machineId);
-                break;
-            case IP_CONFIGURABLE:
-                idService = constructIpConfigurableIdService(ips);
-                break;
-            case DB:
-                idService = constructDbIdService(dbUrl, dbName, dbUser, dbPassword);
-                break;
+        case PROPERTY:
+            idService = constructPropertyIdService(machineId);
+            break;
+        case IP_CONFIGURABLE:
+            idService = constructIpConfigurableIdService(ips);
+            break;
+        case DB:
+            idService = constructDbIdService(dbUrl, dbName, dbUser, dbPassword);
+            break;
         }
     }
 
@@ -115,8 +110,7 @@ public class IdServiceFactoryBean implements FactoryBean<IdService>{
     private IdService constructIpConfigurableIdService(String ips) {
         log.info("Construct Ip Configurable IdService ips {}", ips);
 
-        IpConfigurableMachineIdProvider ipConfigurableMachineIdProvider = new IpConfigurableMachineIdProvider(
-                ips);
+        IpConfigurableMachineIdProvider ipConfigurableMachineIdProvider = new IpConfigurableMachineIdProvider(ips);
 
         IdServiceImpl idServiceImpl;
         if (type != -1)
@@ -134,43 +128,34 @@ public class IdServiceFactoryBean implements FactoryBean<IdService>{
         return idServiceImpl;
     }
 
-    private IdService constructDbIdService(String dbUrl, String dbName,
-                                           String dbUser, String dbPassword) {
-        log.info(
-                "Construct Db IdService dbUrl {} dbName {} dbUser {} dbPassword {}",
-                dbUrl, dbName, dbUser, dbPassword);
+    private IdService constructDbIdService(String dbUrl, String dbName, String dbUser, String dbPassword) {
+        log.info("Construct Db IdService dbUrl {} dbName {} dbUser {} dbPassword {}", dbUrl, dbName, dbUser, dbPassword);
 
-         HikariDataSource dataSource= new HikariDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
 
-        String jdbcDriver = "com.mysql.jdbc.Driver";    // 需修改  默认数据库连接池配置方式  现在暂时指定为针对MySQL
-        try {
-            dataSource.setDriverClassName(jdbcDriver);
-        } catch (PropertyVetoException e) {
-            log.error("Wrong JDBC driver {}", jdbcDriver);
-            log.error("Wrong JDBC driver error: ", e);
-            throw new IllegalStateException("Wrong JDBC driver ", e);
-        }
+        String jdbcDriver = "com.mysql.jdbc.Driver"; // 需修改 默认数据库连接池配置方式
+                                                     // 现在暂时指定为针对MySQL
+//        try {
+        dataSource.setDriverClassName(jdbcDriver);
+//        } catch (PropertyVetoException e) {
+//            log.error("Wrong JDBC driver {}", jdbcDriver);
+//            log.error("Wrong JDBC driver error: ", e);
+//            throw new IllegalStateException("Wrong JDBC driver ", e);
+//        }
 
-        comboPooledDataSource.setMinPoolSize(5);
-        comboPooledDataSource.setMaxPoolSize(30);
-        comboPooledDataSource.setIdleConnectionTestPeriod(20);
-        comboPooledDataSource.setMaxIdleTime(25);
-        comboPooledDataSource.setBreakAfterAcquireFailure(false);
-        comboPooledDataSource.setCheckoutTimeout(3000);
-        comboPooledDataSource.setAcquireRetryAttempts(50);
-        comboPooledDataSource.setAcquireRetryDelay(1000);
+        dataSource.setMaximumPoolSize(30);
+        dataSource.setValidationTimeout(20);
+        dataSource.setMaxLifetime(25);
 
-        String url = String
-                .format("jdbc:mysql://%s/%s?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true",
-                        dbUrl, dbName);
+        String url = String.format("jdbc:mysql://%s/%s?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true", dbUrl, dbName);
 
-        comboPooledDataSource.setJdbcUrl(url);
-        comboPooledDataSource.setUser(dbUser);
-        comboPooledDataSource.setPassword(dbPassword);
+        dataSource.setJdbcUrl(url);
+        dataSource.setUsername(dbUser);
+        dataSource.setPassword(dbPassword);
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setLazyInit(false);
-        jdbcTemplate.setDataSource(comboPooledDataSource);
+        jdbcTemplate.setDataSource(dataSource);
 
         DataBaseMachineIdProvider dbMachineIdProvider = new DataBaseMachineIdProvider();
         dbMachineIdProvider.setJdbcTemplate(jdbcTemplate);
@@ -192,7 +177,7 @@ public class IdServiceFactoryBean implements FactoryBean<IdService>{
         return idServiceImpl;
     }
 
-    public Class<?> getObjectType() {
+    public Class< ? > getObjectType() {
         return IdService.class;
     }
 

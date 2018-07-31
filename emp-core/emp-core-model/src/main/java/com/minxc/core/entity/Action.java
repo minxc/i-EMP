@@ -26,7 +26,7 @@ public class Action implements Serializable {
 
     @Id
     @Column(name = "ACTION_ID", length=64)
-    private String id;
+    private long id;
     @Column(name = "ACTION_TYPE", length=32)
     private String type; //GET POST
 
