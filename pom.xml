@@ -24,8 +24,17 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-boot-dependencies>2.0.4.RELEASE</spring-boot-dependencies>
 		<spring-version>5.0.8.RELEASE</spring-version>
+		<spring-data-version>2.0.9.RELEASE</spring-data-version>
 		<spring-security-version>5.0.7.RELEASE</spring-security-version>
 		<hikaricp-version>3.2.0</hikaricp-version>
+		<mysql-jdbc-version>8.0.11</mysql-jdbc-version>
+		<commons-collection-version>4.1</commons-collection-version>
+		<commons-lang3-version>3.7</commons-lang3-version>
+		<lombok-version>1.18.0</lombok-version>
+		<guava-version>25.1-jre</guava-version>
+		<hibernate-version>5.3.3.Final</hibernate-version>
+		<slf4j-version>1.7.25</slf4j-version>
+		<thymeleaf-version>3.0.9.RELEASE</thymeleaf-version>
 	</properties>
 
 
@@ -34,7 +43,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.0</version>
+			<version>${lombok-version}</version>
 		</dependency>
 
 		<!--引入对Spring boot的依赖 -->
@@ -70,25 +79,25 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
-			<version>4.1</version>
+			<version>${commons-collection-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.7</version>
+			<version>${commons-lang3-version}</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>25.1-jre</version>
+			<version>${guava-version}</version>
 		</dependency>
 
 	</dependencies>
 
-	<dependencyManagement>
+	<!-- <dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -101,5 +110,5 @@
 				<version>5.0.8.RELEASE</version>
 			</dependency>
 		</dependencies>
-	</dependencyManagement>
+	</dependencyManagement> -->
 </project>

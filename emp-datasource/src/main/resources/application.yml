@@ -3,7 +3,7 @@ spring:
   datasource:
     default:
       hikari:
-        url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;
+        url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&characterEncoding=UTF-8&useSSL=false
         username: root
         password: Mym7Root!
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,7 +15,7 @@ spring:
     secondary: ds1,ds2
     ds1:
         hikari:
-                  url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;
+                  url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&characterEncoding=UTF-8&useSSL=false
                   username: root
                   password: Mym7Root!
                   driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,7 +26,7 @@ spring:
                   max-lifetime: 1800000
     ds2:
         hikari:
-                  url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;
+                  url: jdbc:mysql://192.168.249.235:3306/iEMP?useUnicode=true&characterEncoding=UTF-8&useSSL=false
                   username: root
                   password: Mym7Root!
                   driver-class-name: com.mysql.cj.jdbc.Driver

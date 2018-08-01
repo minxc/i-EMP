@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-public class EmpUIApplication {
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(EmpUIApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
 
