@@ -20,7 +20,7 @@ public class ModelRelation implements Serializable {
 
     private static final long serialVersionUID = -6622870628230967875L;
 
-    private String id;
+    private long id;
     private String model;
     private String module;
     private String writeDate;

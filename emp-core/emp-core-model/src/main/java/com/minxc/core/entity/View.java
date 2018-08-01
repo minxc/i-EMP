@@ -28,7 +28,7 @@ public class View implements Serializable {
 
     @Id
     @Column(name="VIEW_ID", length = 32)
-    private String id;
+    private long id;
     @Column(name="VIEW_NAME", length = 32)
     private String name; //视图名称
     @Column(name="VIEW_CODE", length = 32)

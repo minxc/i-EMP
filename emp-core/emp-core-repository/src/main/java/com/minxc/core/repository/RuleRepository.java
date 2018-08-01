@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.minxc.core.entity.Rule;
 
 @Repository
-public interface RuleRepository extends JpaRepository<Rule, String> {
+public interface RuleRepository extends JpaRepository<Rule, Long> {
 
 }

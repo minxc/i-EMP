@@ -28,7 +28,7 @@ public class Model implements Serializable {
 	
 	@Id
 	@Column(name = "MODEL_ID", length = 64)
-	private String id;
+	private long id;
 	@Column(name = "MODEL_NAME", length = 64)
 	private String name;
 	@Column(name = "STATE")

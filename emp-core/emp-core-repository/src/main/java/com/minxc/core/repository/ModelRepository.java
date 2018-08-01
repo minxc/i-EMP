@@ -37,6 +37,6 @@ import com.minxc.core.entity.Model;
 *    
 */
 @Repository
-public interface ModelRepository extends JpaRepository<Model, String> {
+public interface ModelRepository extends JpaRepository<Model, Long> {
 
 }

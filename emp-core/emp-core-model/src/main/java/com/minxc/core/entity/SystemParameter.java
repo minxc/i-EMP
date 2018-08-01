@@ -27,7 +27,7 @@ public class SystemParameter implements Serializable {
 
     private static final long serialVersionUID = 6530416528271673220L;
     @Id
-    private String  id;
+    private long  id;
     @Column(name="NAME")
     private String name;
     @Column(name="CODE")

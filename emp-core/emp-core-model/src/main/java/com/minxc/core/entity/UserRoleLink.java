@@ -28,7 +28,7 @@ public class UserRoleLink implements Serializable {
 	private static final long serialVersionUID = -693476254671853756L;
 	@Id
 	@Column(name ="ID")
-	private String id;
+	private long id;
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private User user;

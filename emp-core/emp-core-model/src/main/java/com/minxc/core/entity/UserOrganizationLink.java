@@ -33,7 +33,7 @@ public class UserOrganizationLink implements Serializable {
     private static final long serialVersionUID = -2247125479788756201L;
 
     @Id
-    private String id;
+    private long id;
     
     @ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "USER_ID", nullable = false)

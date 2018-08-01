@@ -25,7 +25,7 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = 2409130177089282057L;
 
     @Id
-    private String id;
+    private long id;
     @Column(name="EMP_NAME")
     private String name;
     @Column(name="BIRTHDAY")

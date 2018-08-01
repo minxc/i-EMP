@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.minxc.core.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 	
 	public User findByUserName(String userName);
 }

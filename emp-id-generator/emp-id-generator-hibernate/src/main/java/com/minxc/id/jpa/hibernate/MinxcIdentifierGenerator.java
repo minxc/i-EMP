@@ -56,6 +56,10 @@ public class MinxcIdentifierGenerator implements IdentifierGenerator {
     */
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+        
+        
+        
+        
         return null;
     }
 

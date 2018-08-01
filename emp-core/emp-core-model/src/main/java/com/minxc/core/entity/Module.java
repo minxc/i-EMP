@@ -25,7 +25,7 @@ public class Module implements Serializable {
     private static final long serialVersionUID = 3698217265888327346L;
     @Id
     @Column(name = "MODULE_ID", length = 64)
-    private String id;
+    private long id;
     @Column(name = "MODULE_NAME", length = 64)
     private String name;
     @Column(name = "CREATE_DATE")

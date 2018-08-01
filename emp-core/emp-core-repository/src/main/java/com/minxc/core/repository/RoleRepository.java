@@ -22,6 +22,6 @@ import com.minxc.core.entity.Role;
  */
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, String> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
 }

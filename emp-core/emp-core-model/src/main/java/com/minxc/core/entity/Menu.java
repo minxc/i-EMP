@@ -29,7 +29,7 @@ public class Menu implements Serializable {
     private static final long serialVersionUID = 6966767403824381968L;
     @Id
     @Column(name="MENU_ID")
-    private String id;
+    private long id;
     
     @Column(name = "MENU_NAME")
     private String name;

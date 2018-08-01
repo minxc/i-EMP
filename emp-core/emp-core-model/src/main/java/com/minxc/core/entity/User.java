@@ -29,7 +29,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 4038805690758516090L;
     @Id
     @Column(name="ID")
-    private String id;
+    private long id;
     @Column(name="USER_NAME")
     private String userName;
     @Column(name="PASSWORD")

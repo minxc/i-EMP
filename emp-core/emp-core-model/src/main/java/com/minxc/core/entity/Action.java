@@ -25,7 +25,7 @@ public class Action implements Serializable {
     private static final long serialVersionUID = 6223171507632459830L;
 
     @Id
-    @Column(name = "ACTION_ID", length=64)
+    @Column(name = "ACTION_ID")
     private long id;
     @Column(name = "ACTION_TYPE", length=32)
     private String type; //GET POST

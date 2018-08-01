@@ -29,7 +29,7 @@ public class Role implements Serializable {
 
     @Id
     @Column(name="ROLE_ID", length = 64)
-    private String id; //主键
+    private long id; //主键
     @Column(name="ROLE_NAME", length = 64)
     private String name; //组织机构名称
     @Column(name="ROLE_CODE", length = 64)

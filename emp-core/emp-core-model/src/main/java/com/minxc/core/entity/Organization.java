@@ -31,8 +31,8 @@ public class Organization implements Serializable {
 
     private static final long serialVersionUID = 2246665191774203262L;
     @Id
-    @Column(name = "ORG_ID", length = 64)
-    private String id; //主键
+    @Column(name = "ORG_ID")
+    private long id; //主键
     @Column(name = "ORG_NAME", length = 64)
     private String name; //组织机构名称
     @Column(name = "ORG_CODE", length = 64)

@@ -26,7 +26,7 @@ public class ModelField implements Serializable {
     private static final long serialVersionUID = 9189059039281141720L;
 
     @Id
-    private String id;
+    private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MODEL_ID", nullable = false, unique = false, updatable = true)
     private Model model;

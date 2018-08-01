@@ -25,7 +25,7 @@ public class Group implements Serializable {
     private static final long serialVersionUID = 9153837232212503655L;
     @Id
     @Column(name = "GROUP_ID")
-    private String id; //主键
+    private long id; //主键
     @Column(name = "GOURP_NAME", nullable = false)
     private String name; //组织机构名称
     @Column(name = "GOURP_CODE", nullable = false)

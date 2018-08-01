@@ -23,7 +23,7 @@ public class Permission implements Serializable {
     private static final long serialVersionUID = -3544380775368936034L;
 
     @Id
-    private String id; //主键
+    private long id; //主键
     @Column(name = "VIEW_ID", length=64)
     private String view;   //所属视图
     @Column(name = "ACTION_ID", length=64)

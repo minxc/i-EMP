@@ -30,7 +30,7 @@ public class Rule implements Serializable {
     private static final long serialVersionUID = 9119401136982487743L;
 
     @Id
-    private String id; //主键
+    private long id; //主键
     @Column(name="CONTENTS")
     private String contents;
     

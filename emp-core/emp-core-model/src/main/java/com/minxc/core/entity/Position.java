@@ -75,7 +75,7 @@ public class Position implements Serializable {
     private static final long serialVersionUID = -4347972984702973588L;
     
     @Id
-    private String id;
+    private long id;
     
     @Column(name="POSTION_NAME", length=64)
     private String name;
